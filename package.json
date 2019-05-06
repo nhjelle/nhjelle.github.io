@@ -1,0 +1,19 @@
+{
+  "name": "nhjelle.github.io",
+  "version": "1.0.0",
+  "description": "Chess AI Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhjelle/nhjelle.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhjelle/nhjelle.github.io/issues"
+  },
+  "homepage": "https://github.com/nhjelle/nhjelle.github.io#readme"
+}
