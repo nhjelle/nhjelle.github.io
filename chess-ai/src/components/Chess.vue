@@ -158,10 +158,7 @@ export default {
         },
         validateMove(color, row, col){
             const piece = this.cells[row][col];
-            if(piece == null || piece.color !== color){
-                return true;
-            }
-            return false;
+            return piece == null || piece.color !== color;
         },
         getLegalMovesForPiece(type, color, row, col, hasMoved){
             let moves = [];
