@@ -1,5 +1,11 @@
 <template>
-<div></div>
+    <div>
+        <div v-for="(row, rowIndex) in cells">
+            <span v-for="(cell, cellIndex) in row">
+                {{ cell.color }}
+            </span>
+        </div>
+    </div>
 </template>
 <script>
 import initialPieces from './InitialPieces.json';
