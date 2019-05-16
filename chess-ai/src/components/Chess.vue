@@ -344,7 +344,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
 .chessboard {
     width: 640px;
     height: 640px;
