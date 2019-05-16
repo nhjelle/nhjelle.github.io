@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-for="(row, rowIndex) in cells">
-            <span v-for="(cell, cellIndex) in row">
+        <div v-for="(row, rowIndex) in cells" :key="rowIndex">
+            <span v-for="(cell, cellIndex) in row" :key="cellIndex">
                 {{ cell.color }}
             </span>
         </div>
