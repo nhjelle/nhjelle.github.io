@@ -1,5 +1,5 @@
 <template>
-    <div>TEST
+    <div>
         <div class="chessboard">
             <div v-for="(row, rowIndex) in cells" :key="rowIndex">
                 <div :id="'cell-'+rowIndex+'-'+cellIndex" :class="getCellClass(cell, rowIndex, cellIndex)" 
