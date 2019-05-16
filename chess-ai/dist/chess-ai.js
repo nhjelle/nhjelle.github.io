@@ -1570,12 +1570,12 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=93ed778a&shadow
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1b3deb79-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=abffd03a&
-var Chessvue_type_template_id_abffd03a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},_vm._l((_vm.cells),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)}),0)])}
-var Chessvue_type_template_id_abffd03a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1b3deb79-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=0a38a464&
+var Chessvue_type_template_id_0a38a464_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},_vm._l((_vm.cells),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)}),0)])}
+var Chessvue_type_template_id_0a38a464_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=abffd03a&
+// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=0a38a464&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
 var es6_regexp_split = __webpack_require__("28a5");
@@ -1612,7 +1612,7 @@ var InitialPieces = __webpack_require__("ef09");
 //
 
 /* harmony default export */ var Chessvue_type_script_lang_js_ = ({
-  name: 'Chess',
+  name: 'chess-ai',
   props: {},
   data: function data() {
     return {
@@ -1663,7 +1663,6 @@ var InitialPieces = __webpack_require__("ef09");
       var startPiece = this.cells[startPosition.row][startPosition.col].piece;
       startPiece.hasMoved = true;
       var endPiece = this.cells[endPosition.row][endPosition.col].piece;
-      var color = startPiece.color;
 
       if (endPiece) {
         this.capturePiece(endPiece);
@@ -2031,8 +2030,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var component = normalizeComponent(
   components_Chessvue_type_script_lang_js_,
-  Chessvue_type_template_id_abffd03a_render,
-  Chessvue_type_template_id_abffd03a_staticRenderFns,
+  Chessvue_type_template_id_0a38a464_render,
+  Chessvue_type_template_id_0a38a464_staticRenderFns,
   false,
   injectStyles,
   null,

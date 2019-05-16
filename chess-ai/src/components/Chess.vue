@@ -14,7 +14,7 @@
 <script>
 import initialPieces from './InitialPieces.json';
 export default {
-    name: 'Chess',
+    name: 'chess-ai',
     props: {
     },
     data: function(){
@@ -63,7 +63,6 @@ export default {
             const startPiece = this.cells[startPosition.row][startPosition.col].piece;
             startPiece.hasMoved = true;
             const endPiece = this.cells[endPosition.row][endPosition.col].piece;
-            const color = startPiece.color;
             if(endPiece){
                 this.capturePiece(endPiece);
             }
