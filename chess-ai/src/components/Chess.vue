@@ -390,7 +390,8 @@ export default {
                             checkmateTestBoard.push(row.map(function(cell) { return Object.assign({}, cell)}));
                         }
                         this.movePiece(checkmateTestBoard, {row: cell.row, col: cell.col}, {row: move.row, col: move.col});
-                        if(!this.isThreatened(checkmateTestBoard, kingPos, color)){
+                        let testPos = cell.piece.type == 'king' ? {row: move.row, col: move.col} : kingPos;
+                        if(!this.isThreatened(checkmateTestBoard, testPos, color)){
                             console.log(`${color} king is under check.`);
                             return 'check';
                         }
