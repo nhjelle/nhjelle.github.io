@@ -102,6 +102,18 @@ export default {
                 if(piece && piece.color === 'white'){
                     this.selectedCell = {row: row, col: col};
                     this.legalMoves = this.getPsuedoLegalsForPiece(this.cells, piece.type, piece.color, row, col, piece.hasMoved);
+                    const kingPos = this.getKingPosition(this.cells, 'white');
+                    let self = this;
+                    for(let i = this.legalMoves.length-1; i >= 0; i--){
+                        let checkTestBoard = [];
+                        for(let row of self.cells){
+                            checkTestBoard.push(row.map(cell => Object.assign({}, cell)));
+                        }
+                        self.movePiece(checkTestBoard, {row: row, col: col}, this.legalMoves[i]);
+                        if(self.isThreatened(checkTestBoard, kingPos, 'white')){
+                            this.legalMoves.splice(i, 1);
+                        }
+                    }
                     if(this.legalMoves && this.legalMoves.length > 0){
                         for(let move of this.legalMoves){
                             this.cells[move.row][move.col].legalMove = true;
@@ -360,7 +372,7 @@ export default {
             }
             return false;
         },
-        getKingStatus(tempBoard, color){
+        getKingPosition(tempBoard, color){
             let kingCell;
             for(let row of tempBoard){
                 kingCell = row.filter(function(cell){
@@ -371,7 +383,10 @@ export default {
                     break;
                 }
             }
-            const kingPos = {row: kingCell.row, col: kingCell.col};
+            return {row: kingCell.row, col: kingCell.col};
+        },
+        getKingStatus(tempBoard, color){
+            const kingPos = this.getKingPosition(tempBoard, color);
             if(this.isThreatened(tempBoard, kingPos, color)){
                 // check if checkmate
                 let friendlyCells = [];
