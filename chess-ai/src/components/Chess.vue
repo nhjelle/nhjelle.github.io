@@ -101,7 +101,7 @@ export default {
                 let piece = this.cells[row][col].piece;
                 if(piece && piece.color === 'white'){
                     this.selectedCell = {row: row, col: col};
-                    this.legalMoves = this.getLegalMovesForPiece(this.cells, piece.type, piece.color, row, col, piece.hasMoved);
+                    this.legalMoves = this.getPsuedoLegalsForPiece(this.cells, piece.type, piece.color, row, col, piece.hasMoved);
                     if(this.legalMoves && this.legalMoves.length > 0){
                         for(let move of this.legalMoves){
                             this.cells[move.row][move.col].legalMove = true;
@@ -319,7 +319,7 @@ export default {
             const piece = board[row][col].piece;
             return piece == null || piece.color !== color;
         },
-        getLegalMovesForPiece(board, type, color, row, col, hasMoved){
+        getPsuedoLegalsForPiece(board, type, color, row, col, hasMoved){
             let moves = [];
             switch(type){
                 case "pawn":
@@ -341,7 +341,6 @@ export default {
                     moves = this.getKingMoves(board, color, row, col);
                     break;
             }
-            // TODO: trim any moves that put king in check
             return moves;
         },
         isThreatened(tempBoard, piecePosition, color){
@@ -349,7 +348,7 @@ export default {
                 for(let cell of row){
                     if(cell.piece && cell.piece.color !== color){
                         // opposing piece, check if it threatens king
-                        const moves = this.getLegalMovesForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col, cell.piece.hasMoved);
+                        const moves = this.getPsuedoLegalsForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col, cell.piece.hasMoved);
                         const threateningMove = moves.filter(function(move){
                             return move.row === piecePosition.row && move.col === piecePosition.col;
                         });
@@ -382,7 +381,7 @@ export default {
                     }));
                 }
                 for(let cell of friendlyCells){
-                    let moves = this.getLegalMovesForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col, cell.piece.hasMoved);
+                    let moves = this.getPsuedoLegalsForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col, cell.piece.hasMoved);
                     for(let move of moves){
                         // create a clone of the board
                         const checkmateTestBoard = [];
