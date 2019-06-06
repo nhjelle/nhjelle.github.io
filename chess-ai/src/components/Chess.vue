@@ -190,7 +190,7 @@ export default {
         getPawnMoves(board, color, row, col, hasMoved){
             let moves = [];
             if(color === "white"){
-                if(hasMoved === false && !board[row-1][col].piece){
+                if(hasMoved === false && !board[row-1][col].piece && !board[row-2][col].piece){
                     moves.push({
                         row: row-2,
                         col: col
@@ -219,7 +219,7 @@ export default {
                         col: col
                     });
                 }
-                if(row < board.length-1 && board[row+1][col].piece === null){
+                if(row < board.length-1 && !board[row+1][col].piece && !board[row+2][col].piece){
                     moves.push({
                         row: row+1,
                         col: col
@@ -281,8 +281,6 @@ export default {
                 [-1, 2],
                 [1, -2],
                 [1, 2],
-                [1, -2],
-                [1, 2]
             ];
 
             for(let offset of offsets){
