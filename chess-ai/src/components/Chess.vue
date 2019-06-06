@@ -455,6 +455,83 @@ export default {
             }
             console.log(`${color} king is safe.`);
             return 'safe';
+        },
+        alphaBetaMax(board, alpha, beta, remainingDepth){
+            if(remainingDepth == 0){
+                return this.evaluateBoard(board, "black");
+            }
+            for(;;){
+                // for each move, perform move
+                score = this.alphaBetaMin(board, alpha, beta, remainingDepth-1);
+                if(score >= beta){
+                    return beta;
+                }
+                if(score > alpha){
+                    alpha = score;
+                }
+            }
+            return alpha;
+        },
+        alphaBetaMin(board, alpha, beta, remainingDepth){
+            if(remainingDepth == 0){
+                return this.evaluateBoard(board, "black");
+            }
+            for(;;){
+                // for each move, perform move
+                score = this.alphaBetaMax(board, alpha, beta, remainingDepth-1);
+                if(score <= alpha){
+                    return alpha;
+                }
+                if(score < beta){
+                    beta = score;
+                }
+            }
+            return beta;
+        },
+        evaluateBoard(board, colorToMove){
+            const moveCounts = {
+                white: 0,
+                black: 0
+            };
+            let whiteMoves = 0;
+            let blackMoves = 0;
+            const pieceCounts = {
+                white: {
+                    pawn: 0,
+                    rook: 0,
+                    knight: 0,
+                    bishop: 0,
+                    queen: 0,
+                    king: 0
+                },
+                black: {
+                    pawn: 0,
+                    rook: 0,
+                    knight: 0,
+                    bishop: 0,
+                    queen: 0,
+                    king: 0
+                }
+            };
+            for(let row of board){
+                for(let cell of row){
+                    if(cell.piece){
+                        pieceCounts[cell.piece.color][cell.piece.type]++;
+                        moveCounts[cell.piece.color] += this.getPsuedoLegalsForPiece(board, cell.piece.type,
+                            cell.piece.color, cell.row, cell.col, cell.piece.hasMoved);
+                    }
+                }   
+            }
+            let materialScore = 200  * (pieceCounts.black.king-pieceCounts.white.king)
+              + 9 * (pieceCounts.black.queen-pieceCounts.white.queen)
+              + 5  * (pieceCounts.black.rook-pieceCounts.white.rook)
+              + 3* (pieceCounts.black.knight-pieceCounts.white.knight)
+              + 3* (pieceCounts.black.bishop-pieceCounts.white.bishop)
+              + 1  * (pieceCounts.black.pawn-pieceCounts.white.pawn);
+
+            mobilityScore = 0.1 * (moveCounts.black-moveCounts.white);
+
+            return (materialScore + mobilityScore) * colorToMove == "black" ? 1 : -1;
         }
     }
 }
