@@ -1563,25 +1563,25 @@ function normalizeComponent (
   }
 }
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1b3deb79-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=93ed778a&shadow
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=93ed778a&shadow
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('Chess')],1)}
 var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=93ed778a&shadow
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1b3deb79-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=caf62bb6&
-var Chessvue_type_template_id_caf62bb6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},_vm._l((_vm.cells),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)}),0)])}
-var Chessvue_type_template_id_caf62bb6_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=77795356&
+var Chessvue_type_template_id_77795356_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
+var Chessvue_type_template_id_77795356_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=caf62bb6&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
-var es6_regexp_split = __webpack_require__("28a5");
+// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=77795356&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.object.assign.js
 var es6_object_assign = __webpack_require__("f751");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
+var es6_regexp_split = __webpack_require__("28a5");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es7.symbol.async-iterator.js
 var es7_symbol_async_iterator = __webpack_require__("ac4d");
@@ -1614,6 +1614,12 @@ var InitialPieces = __webpack_require__("ef09");
 //
 //
 //
+//
+//
+//
+//
+
+/* eslint-disable no-console */
 
 /* harmony default export */ var Chessvue_type_script_lang_js_ = ({
   name: 'chess-ai',
@@ -1623,6 +1629,7 @@ var InitialPieces = __webpack_require__("ef09");
       selectedCell: null,
       legalMoves: [],
       cells: [],
+      displayBoard: [],
       capturedWhitePieces: [],
       capturedBlackPieces: [],
       pieceCodes: {
@@ -1642,16 +1649,38 @@ var InitialPieces = __webpack_require__("ef09");
           knight: '&#9822;',
           pawn: '&#9823;'
         }
-      }
+      },
+      aiMove: {
+        value: -Infinity,
+        move: null,
+        min: Infinity
+      },
+      winner: ''
     };
   },
 
   created() {
     this.createEmptyBoard();
     this.placeInitialPieces();
+    Object.freeze(this.cells);
   },
 
   methods: {
+    restartGame() {
+      this.cells = [];
+      this.legalMoves = [];
+      this.displayBoard = [];
+      this.aiMove = {
+        value: -Infinity,
+        move: null,
+        min: Infinity
+      };
+      this.winner = '';
+      this.selectedCell = null;
+      this.createEmptyBoard();
+      this.placeInitialPieces();
+    },
+
     capturePiece(piece) {
       if (piece.color == 'black') {
         this.capturedBlackPieces.push(piece);
@@ -1660,39 +1689,87 @@ var InitialPieces = __webpack_require__("ef09");
       }
     },
 
-    movePiece(board, startPosition, endPosition) {
-      var startPiece = board[startPosition.row][startPosition.col].piece;
-      startPiece.hasMoved = true;
-      var endPiece = board[endPosition.row][endPosition.col].piece;
+    movePiece(startPosition, endPosition) {
+      var startPiece = this.cells[startPosition.row][startPosition.col].piece;
+      var endPiece = this.cells[endPosition.row][endPosition.col].piece;
 
       if (endPiece) {
         this.capturePiece(endPiece);
       }
 
-      board[endPosition.row][endPosition.col].piece = startPiece;
-      board[startPosition.row][startPosition.col].piece = null;
+      this.cells[endPosition.row][endPosition.col].piece = startPiece;
+      this.cells[startPosition.row][startPosition.col].piece = null;
     },
 
     getCellClass(cell, rowIndex, cellIndex) {
       var cellClass = [];
-      cellClass.push(cell.color);
+
+      if (!cell.value || typeof cell.value == 'undefined') {
+        cellClass.push(cell.color);
+      } else {
+        console.log("Has value");
+        cellClass.push({
+          "background-color": "	#A52A2A"
+        });
+      }
+
       if (this.selectedCell && this.selectedCell.row == rowIndex && this.selectedCell.col == cellIndex) cellClass.push('selected');
       if (this.cells[rowIndex][cellIndex].legalMove) cellClass.push('legal-move');
+      cellClass.push('cell');
       return cellClass;
     },
 
+    checkGameover() {
+      if (this.getKingStatus('white') == 'checkmate') {
+        this.winner = "black";
+        return true;
+      } else if (this.getKingStatus('black') == 'checkmate') {
+        this.winner = "white";
+        return true;
+      }
+
+      return false;
+    },
+
     playAIMove() {
-      var aiCells = [];
+      this.alphaBetaMax(-Infinity, Infinity, 4, true);
+      this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
+      this.aiMove = {
+        value: -Infinity,
+        move: null,
+        min: Infinity
+      };
+      if (this.checkGameover()) return;
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
         for (var _iterator = this.cells[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _row = _step.value;
-          aiCells = aiCells.concat(_row.filter(function (cell) {
-            return cell.piece && cell.piece.color === 'black';
-          }));
+          var row = _step.value;
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = row[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var cell = _step2.value;
+              cell.value = null;
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                _iterator2.return();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
+            }
+          }
         }
       } catch (err) {
         _didIteratorError = true;
@@ -1708,100 +1785,6 @@ var InitialPieces = __webpack_require__("ef09");
           }
         }
       }
-
-      var moves = [];
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = aiCells[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var cell = _step2.value;
-          var cellMoves = this.getPsuedoLegalsForPiece(this.cells, cell.piece.type, 'black', cell.row, cell.col, cell.piece.hasMoved);
-          var _iteratorNormalCompletion4 = true;
-          var _didIteratorError4 = false;
-          var _iteratorError4 = undefined;
-
-          try {
-            for (var _iterator4 = cellMoves[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-              var move = _step4.value;
-              moves.push({
-                piecePos: {
-                  row: cell.row,
-                  col: cell.col
-                },
-                movePos: move
-              });
-            }
-          } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-                _iterator4.return();
-              }
-            } finally {
-              if (_didIteratorError4) {
-                throw _iteratorError4;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      for (var i = moves.length - 1; i >= 0; i--) {
-        var checkTestBoard = [];
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
-
-        try {
-          for (var _iterator3 = this.cells[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var row = _step3.value;
-            checkTestBoard.push(row.map(cell => Object.assign({}, cell)));
-          }
-        } catch (err) {
-          _didIteratorError3 = true;
-          _iteratorError3 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-              _iterator3.return();
-            }
-          } finally {
-            if (_didIteratorError3) {
-              throw _iteratorError3;
-            }
-          }
-        }
-
-        this.movePiece(checkTestBoard, moves[i].piecePos, moves[i].movePos);
-
-        if (this.isThreatened(checkTestBoard, this.getKingPosition(checkTestBoard, 'black'), 'black')) {
-          moves.splice(i, 1);
-        }
-      }
-
-      var randomMove = moves[Math.floor(Math.random() * moves.length)];
-      this.movePiece(this.cells, randomMove.piecePos, randomMove.movePos);
-
-      if (this.getKingStatus(this.cells, 'white') == 'checkmate' || this.getKingStatus(this.cells, 'black') == 'checkmate') {
-        console.log("Game over."); // display gameover
-      }
     },
 
     selectCell(row, col) {
@@ -1810,26 +1793,26 @@ var InitialPieces = __webpack_require__("ef09");
           this.selectedCell = null;
 
           if (this.legalMoves && this.legalMoves.length > 0) {
-            var _iteratorNormalCompletion5 = true;
-            var _didIteratorError5 = false;
-            var _iteratorError5 = undefined;
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
 
             try {
-              for (var _iterator5 = this.legalMoves[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                var move = _step5.value;
+              for (var _iterator3 = this.legalMoves[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                var move = _step3.value;
                 this.cells[move.row][move.col].legalMove = false;
               }
             } catch (err) {
-              _didIteratorError5 = true;
-              _iteratorError5 = err;
+              _didIteratorError3 = true;
+              _iteratorError3 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
-                  _iterator5.return();
+                if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+                  _iterator3.return();
                 }
               } finally {
-                if (_didIteratorError5) {
-                  throw _iteratorError5;
+                if (_didIteratorError3) {
+                  throw _iteratorError3;
                 }
               }
             }
@@ -1839,17 +1822,20 @@ var InitialPieces = __webpack_require__("ef09");
         } else {
           if (this.legalMoves && this.legalMoves.some(cell => cell.row === row && cell.col === col)) {
             // move piece
-            this.movePiece(this.cells, this.selectedCell, {
+            this.movePiece(this.selectedCell, {
               row: row,
               col: col
-            }); // reset selected piece after move
+            });
+            this.displayBoard = this.cloneBoard(this.cells); // reset selected piece after move
 
             this.selectCell(this.selectedCell.row, this.selectedCell.col);
 
-            if (this.getKingStatus(this.cells, 'white') == 'checkmate' || this.getKingStatus(this.cells, 'black') == 'checkmate') {
-              console.log("Game over."); // display gameover
+            if (this.checkGameover()) {
+              console.log("Game over.");
+              return;
             } else {
-              this.playAIMove(); // AI move
+              this.playAIMove();
+              this.displayBoard = this.cloneBoard(this.cells); // AI move
             }
           }
         }
@@ -1862,67 +1848,32 @@ var InitialPieces = __webpack_require__("ef09");
             row: row,
             col: col
           };
-          this.legalMoves = this.getPsuedoLegalsForPiece(this.cells, piece.type, piece.color, row, col, piece.hasMoved);
-          var kingPos = this.getKingPosition(this.cells, 'white');
-          var self = this;
-
-          for (var i = this.legalMoves.length - 1; i >= 0; i--) {
-            var checkTestBoard = [];
-            var _iteratorNormalCompletion6 = true;
-            var _didIteratorError6 = false;
-            var _iteratorError6 = undefined;
-
-            try {
-              for (var _iterator6 = self.cells[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                var _row2 = _step6.value;
-                checkTestBoard.push(_row2.map(cell => Object.assign({}, cell)));
-              }
-            } catch (err) {
-              _didIteratorError6 = true;
-              _iteratorError6 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion6 && _iterator6.return != null) {
-                  _iterator6.return();
-                }
-              } finally {
-                if (_didIteratorError6) {
-                  throw _iteratorError6;
-                }
-              }
-            }
-
-            self.movePiece(checkTestBoard, {
-              row: row,
-              col: col
-            }, this.legalMoves[i]);
-
-            if (self.isThreatened(checkTestBoard, kingPos, 'white')) {
-              this.legalMoves.splice(i, 1);
-            }
-          }
+          var pseudoLegals = this.getPsuedoLegalsForPiece(piece.type, piece.color, row, col);
+          this.legalMoves = this.trimToLegals(pseudoLegals, "white").map(function (move) {
+            return move.movePos;
+          });
 
           if (this.legalMoves && this.legalMoves.length > 0) {
-            var _iteratorNormalCompletion7 = true;
-            var _didIteratorError7 = false;
-            var _iteratorError7 = undefined;
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
 
             try {
-              for (var _iterator7 = this.legalMoves[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-                var _move = _step7.value;
+              for (var _iterator4 = this.legalMoves[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                var _move = _step4.value;
                 this.cells[_move.row][_move.col].legalMove = true;
               }
             } catch (err) {
-              _didIteratorError7 = true;
-              _iteratorError7 = err;
+              _didIteratorError4 = true;
+              _iteratorError4 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion7 && _iterator7.return != null) {
-                  _iterator7.return();
+                if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+                  _iterator4.return();
                 }
               } finally {
-                if (_didIteratorError7) {
-                  throw _iteratorError7;
+                if (_didIteratorError4) {
+                  throw _iteratorError4;
                 }
               }
             }
@@ -1954,25 +1905,26 @@ var InitialPieces = __webpack_require__("ef09");
           this.cells[row][col].piece = {
             color: pieceFields[0],
             type: pieceFields[1],
-            isThreatened: false,
-            hasMoved: false
-          }; // TODO: remember to set hasMoved after moving pawn for the first time
+            isThreatened: false
+          };
         }
       }
+
+      this.displayBoard = this.cloneBoard(this.cells);
     },
 
-    getPawnMoves(board, color, row, col, hasMoved) {
+    getPawnMoves(color, row, col) {
       var moves = [];
 
       if (color === "white") {
-        if (hasMoved === false && !board[row - 1][col].piece) {
+        if (row === 6 && !this.cells[row - 1][col].piece && !this.cells[row - 2][col].piece) {
           moves.push({
             row: row - 2,
             col: col
           });
         }
 
-        if (row > 0 && board[row - 1][col].piece === null) {
+        if (row > 0 && this.cells[row - 1][col].piece === null) {
           moves.push({
             row: row - 1,
             col: col
@@ -1980,45 +1932,45 @@ var InitialPieces = __webpack_require__("ef09");
         }
 
         if (row > 0 && col > 0) {
-          var cellPiece = board[row - 1][col - 1].piece;
+          var cellPiece = this.cells[row - 1][col - 1].piece;
           if (cellPiece && cellPiece.color != color) moves.push({
             row: row - 1,
             col: col - 1
           });
         }
 
-        if (row > 0 && col < board.length - 1) {
-          var _cellPiece = board[row - 1][col + 1].piece;
+        if (row > 0 && col < this.cells.length - 1) {
+          var _cellPiece = this.cells[row - 1][col + 1].piece;
           if (_cellPiece && _cellPiece.color != color) moves.push({
             row: row - 1,
             col: col + 1
           });
         }
       } else {
-        if (hasMoved === false && !board[row + 1][col].piece) {
+        if (row === 1 && !this.cells[row + 1][col].piece && !this.cells[row + 2][col].piece) {
           moves.push({
             row: row + 2,
             col: col
           });
         }
 
-        if (row < board.length - 1 && board[row + 1][col].piece === null) {
+        if (row < this.cells.length - 1 && !this.cells[row + 1][col].piece && !this.cells[row + 2][col].piece) {
           moves.push({
             row: row + 1,
             col: col
           });
         }
 
-        if (row < board.length - 1 && col < board.length - 1) {
-          var _cellPiece2 = board[row + 1][col + 1].piece;
+        if (row < this.cells.length - 1 && col < this.cells.length - 1) {
+          var _cellPiece2 = this.cells[row + 1][col + 1].piece;
           if (_cellPiece2 && _cellPiece2.color != color) moves.push({
             row: row + 1,
             col: col + 1
           });
         }
 
-        if (row < board.length - 1 && col > 0) {
-          var _cellPiece3 = board[row + 1][col - 1].piece;
+        if (row < this.cells.length - 1 && col > 0) {
+          var _cellPiece3 = this.cells[row + 1][col - 1].piece;
           if (_cellPiece3 && _cellPiece3.color != color) moves.push({
             row: row + 1,
             col: col - 1
@@ -2029,53 +1981,53 @@ var InitialPieces = __webpack_require__("ef09");
       return moves;
     },
 
-    getRookMoves(board, color, row, col) {
+    getRookMoves(color, row, col) {
       var moves = [];
 
       for (var i = row - 1; i >= 0; i--) {
-        if (this.validateMove(board, color, i, col)) moves.push({
+        if (this.validateMove(color, i, col)) moves.push({
           row: i,
           col: col
         });else break;
-        if ((board[i][col] || {}).piece) break;
+        if ((this.cells[i][col] || {}).piece) break;
       }
 
-      for (var _i = row + 1; row < board.length; _i++) {
-        if (this.validateMove(board, color, _i, col)) moves.push({
+      for (var _i = row + 1; row < this.cells.length; _i++) {
+        if (this.validateMove(color, _i, col)) moves.push({
           row: _i,
           col: col
         });else break;
-        if ((board[_i][col] || {}).piece) break;
+        if ((this.cells[_i][col] || {}).piece) break;
       }
 
       for (var _i2 = col - 1; _i2 >= 0; _i2--) {
-        if (this.validateMove(board, color, row, _i2)) moves.push({
+        if (this.validateMove(color, row, _i2)) moves.push({
           row: row,
           col: _i2
         });else break;
-        if ((board[row][_i2] || {}).piece) break;
+        if ((this.cells[row][_i2] || {}).piece) break;
       }
 
-      for (var _i3 = col + 1; row < board.length; _i3++) {
-        if (this.validateMove(board, color, row, _i3)) moves.push({
+      for (var _i3 = col + 1; row < this.cells.length; _i3++) {
+        if (this.validateMove(color, row, _i3)) moves.push({
           row: row,
           col: _i3
         });else break;
-        if ((board[row][_i3] || {}).piece) break;
+        if ((this.cells[row][_i3] || {}).piece) break;
       }
 
       return moves;
     },
 
-    getKnightMoves(board, color, row, col) {
+    getKnightMoves(color, row, col) {
       var moves = [];
-      var offsets = [[-2, 1], [-2, -1], [2, 1], [2, -1], [-1, -2], [-1, 2], [1, -2], [1, 2], [1, -2], [1, 2]];
+      var offsets = [[-2, 1], [-2, -1], [2, 1], [2, -1], [-1, -2], [-1, 2], [1, -2], [1, 2]];
 
       for (var _i4 = 0, _offsets = offsets; _i4 < _offsets.length; _i4++) {
         var offset = _offsets[_i4];
         var newRow = row + offset[0];
         var newCol = col + offset[1];
-        if (this.validateMove(board, color, newRow, newCol)) moves.push({
+        if (this.validateMove(color, newRow, newCol)) moves.push({
           row: newRow,
           col: newCol
         });
@@ -2084,49 +2036,49 @@ var InitialPieces = __webpack_require__("ef09");
       return moves;
     },
 
-    getBishopMoves(board, color, row, col) {
+    getBishopMoves(color, row, col) {
       var moves = [];
 
-      for (var i = 1; i < board.length; i++) {
-        if (this.validateMove(board, color, row + i, col + i)) moves.push({
+      for (var i = 1; i < this.cells.length; i++) {
+        if (this.validateMove(color, row + i, col + i)) moves.push({
           row: row + i,
           col: col + i
         });else break;
-        if ((board[row + i][col + i] || {}).piece) break;
+        if ((this.cells[row + i][col + i] || {}).piece) break;
       }
 
-      for (var _i5 = 1; _i5 < board.length; _i5++) {
-        if (this.validateMove(board, color, row + _i5, col - _i5)) moves.push({
+      for (var _i5 = 1; _i5 < this.cells.length; _i5++) {
+        if (this.validateMove(color, row + _i5, col - _i5)) moves.push({
           row: row + _i5,
           col: col - _i5
         });else break;
-        if ((board[row + _i5][col - _i5] || {}).piece) break;
+        if ((this.cells[row + _i5][col - _i5] || {}).piece) break;
       }
 
-      for (var _i6 = 1; _i6 < board.length; _i6++) {
-        if (this.validateMove(board, color, row - _i6, col + _i6)) moves.push({
+      for (var _i6 = 1; _i6 < this.cells.length; _i6++) {
+        if (this.validateMove(color, row - _i6, col + _i6)) moves.push({
           row: row - _i6,
           col: col + _i6
         });else break;
-        if ((board[row - _i6][col + _i6] || {}).piece) break;
+        if ((this.cells[row - _i6][col + _i6] || {}).piece) break;
       }
 
-      for (var _i7 = 1; _i7 < board.length; _i7++) {
-        if (this.validateMove(board, color, row - _i7, col - _i7)) moves.push({
+      for (var _i7 = 1; _i7 < this.cells.length; _i7++) {
+        if (this.validateMove(color, row - _i7, col - _i7)) moves.push({
           row: row - _i7,
           col: col - _i7
         });else break;
-        if ((board[row - _i7][col - _i7] || {}).piece) break;
+        if ((this.cells[row - _i7][col - _i7] || {}).piece) break;
       }
 
       return moves;
     },
 
-    getQueenMoves(board, color, row, col) {
-      return this.getRookMoves(board, color, row, col).concat(this.getBishopMoves(board, color, row, col));
+    getQueenMoves(color, row, col) {
+      return this.getRookMoves(color, row, col).concat(this.getBishopMoves(color, row, col));
     },
 
-    getKingMoves(board, color, row, col) {
+    getKingMoves(color, row, col) {
       var moves = [];
       var offsets = [[0, 1], [0, -1], [1, 0], [1, 1], [1, -1], [-1, 0], [-1, 1], [-1, -1]];
 
@@ -2134,7 +2086,7 @@ var InitialPieces = __webpack_require__("ef09");
         var offset = _offsets2[_i8];
         var newRow = row + offset[0];
         var newCol = col + offset[1];
-        if (this.validateMove(board, color, newRow, newCol)) moves.push({
+        if (this.validateMove(color, newRow, newCol)) moves.push({
           row: newRow,
           col: newCol
         });
@@ -2143,66 +2095,91 @@ var InitialPieces = __webpack_require__("ef09");
       return moves;
     },
 
-    validateMove(board, color, row, col) {
-      //console.log(board);
-      if (row >= board.length || col >= board.length || row < 0 || col < 0) return false;
-      var piece = board[row][col].piece;
+    validateMove(color, row, col) {
+      if (row >= this.cells.length || col >= this.cells.length || row < 0 || col < 0) return false;
+      var piece = this.cells[row][col].piece;
       return piece == null || piece.color !== color;
     },
 
-    getPsuedoLegalsForPiece(board, type, color, row, col, hasMoved) {
-      var moves = [];
+    trimToLegals(moves, color) {
+      for (var i = moves.length - 1; i >= 0; i--) {
+        var piecePos = moves[i].piecePos;
+        var movePos = moves[i].movePos;
+        var capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
+        this.movePiece(piecePos, movePos);
 
-      switch (type) {
-        case "pawn":
-          moves = this.getPawnMoves(board, color, row, col, hasMoved);
-          break;
+        if (this.isThreatened(this.cells, this.getKingPosition(this.cells, color), color)) {
+          moves.splice(i, 1);
+        }
 
-        case "rook":
-          moves = this.getRookMoves(board, color, row, col);
-          break;
-
-        case "knight":
-          moves = this.getKnightMoves(board, color, row, col);
-          break;
-
-        case "bishop":
-          moves = this.getBishopMoves(board, color, row, col);
-          break;
-
-        case "queen":
-          moves = this.getQueenMoves(board, color, row, col);
-          break;
-
-        case "king":
-          moves = this.getKingMoves(board, color, row, col);
-          break;
+        this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece;
+        this.cells[movePos.row][movePos.col].piece = capturedPiece;
       }
 
       return moves;
     },
 
-    isThreatened(tempBoard, piecePosition, color) {
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
+    getPsuedoLegalsForPiece(type, color, row, col) {
+      var moves = [];
+
+      switch (type) {
+        case "pawn":
+          moves = this.getPawnMoves(color, row, col);
+          break;
+
+        case "rook":
+          moves = this.getRookMoves(color, row, col);
+          break;
+
+        case "knight":
+          moves = this.getKnightMoves(color, row, col);
+          break;
+
+        case "bishop":
+          moves = this.getBishopMoves(color, row, col);
+          break;
+
+        case "queen":
+          moves = this.getQueenMoves(color, row, col);
+          break;
+
+        case "king":
+          moves = this.getKingMoves(color, row, col);
+          break;
+      }
+
+      return moves.map(function (move) {
+        return {
+          piecePos: {
+            row,
+            col
+          },
+          movePos: move
+        };
+      });
+    },
+
+    isThreatened(piecePosition, color) {
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
 
       try {
-        for (var _iterator8 = tempBoard[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-          var row = _step8.value;
-          var _iteratorNormalCompletion9 = true;
-          var _didIteratorError9 = false;
-          var _iteratorError9 = undefined;
+        for (var _iterator5 = this.cells[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var row = _step5.value;
+          var _iteratorNormalCompletion6 = true;
+          var _didIteratorError6 = false;
+          var _iteratorError6 = undefined;
 
           try {
-            for (var _iterator9 = row[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-              var cell = _step9.value;
+            for (var _iterator6 = row[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+              var cell = _step6.value;
 
               if (cell.piece && cell.piece.color !== color) {
                 // opposing piece, check if it threatens king
-                var moves = this.getPsuedoLegalsForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col, cell.piece.hasMoved);
+                var moves = this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col);
                 var threateningMove = moves.filter(function (move) {
-                  return move.row === piecePosition.row && move.col === piecePosition.col;
+                  return move.movePos.row == piecePosition.row && move.movePos.col == piecePosition.col;
                 });
 
                 if (threateningMove && threateningMove.length && threateningMove.length > 0) {
@@ -2211,18 +2188,87 @@ var InitialPieces = __webpack_require__("ef09");
               }
             }
           } catch (err) {
-            _didIteratorError9 = true;
-            _iteratorError9 = err;
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
-                _iterator9.return();
+              if (!_iteratorNormalCompletion6 && _iterator6.return != null) {
+                _iterator6.return();
               }
             } finally {
-              if (_didIteratorError9) {
-                throw _iteratorError9;
+              if (_didIteratorError6) {
+                throw _iteratorError6;
               }
             }
+          }
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      return false;
+    },
+
+    cloneBoard(board) {
+      var clonedBoard = [];
+      var _iteratorNormalCompletion7 = true;
+      var _didIteratorError7 = false;
+      var _iteratorError7 = undefined;
+
+      try {
+        for (var _iterator7 = board[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+          var row = _step7.value;
+          clonedBoard.push(row.map(function (cell) {
+            var clonedCell = Object.assign({}, cell);
+            if (clonedCell.piece) clonedCell.piece = Object.assign({}, clonedCell.piece);
+            return clonedCell;
+          }));
+        }
+      } catch (err) {
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion7 && _iterator7.return != null) {
+            _iterator7.return();
+          }
+        } finally {
+          if (_didIteratorError7) {
+            throw _iteratorError7;
+          }
+        }
+      }
+
+      return clonedBoard;
+    },
+
+    getKingPosition(color) {
+      var kingCell;
+      var _iteratorNormalCompletion8 = true;
+      var _didIteratorError8 = false;
+      var _iteratorError8 = undefined;
+
+      try {
+        for (var _iterator8 = this.cells[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+          var row = _step8.value;
+          kingCell = row.filter(function (cell) {
+            return cell.piece && cell.piece.type === 'king' && cell.piece.color === color;
+          });
+
+          if (kingCell && kingCell.length > 0) {
+            kingCell = kingCell[0];
+            break;
           }
         }
       } catch (err) {
@@ -2240,176 +2286,379 @@ var InitialPieces = __webpack_require__("ef09");
         }
       }
 
-      return false;
-    },
-
-    getKingPosition(tempBoard, color) {
-      var kingCell;
-      var _iteratorNormalCompletion10 = true;
-      var _didIteratorError10 = false;
-      var _iteratorError10 = undefined;
-
-      try {
-        for (var _iterator10 = tempBoard[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-          var row = _step10.value;
-          kingCell = row.filter(function (cell) {
-            return cell.piece && cell.piece.type === 'king' && cell.piece.color === color;
-          });
-
-          if (kingCell && kingCell.length > 0) {
-            kingCell = kingCell[0];
-            break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError10 = true;
-        _iteratorError10 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion10 && _iterator10.return != null) {
-            _iterator10.return();
-          }
-        } finally {
-          if (_didIteratorError10) {
-            throw _iteratorError10;
-          }
-        }
-      }
-
       return {
         row: kingCell.row,
         col: kingCell.col
       };
     },
 
-    getKingStatus(tempBoard, color) {
-      var kingPos = this.getKingPosition(tempBoard, color);
+    getKingStatus(color) {
+      var kingPos = this.getKingPosition(color);
 
-      if (this.isThreatened(tempBoard, kingPos, color)) {
+      if (this.isThreatened(kingPos, color)) {
         // check if checkmate
         var friendlyCells = [];
-        var _iteratorNormalCompletion11 = true;
-        var _didIteratorError11 = false;
-        var _iteratorError11 = undefined;
+        var _iteratorNormalCompletion9 = true;
+        var _didIteratorError9 = false;
+        var _iteratorError9 = undefined;
 
         try {
-          for (var _iterator11 = tempBoard[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-            var row = _step11.value;
+          for (var _iterator9 = this.cells[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+            var row = _step9.value;
             friendlyCells = friendlyCells.concat(row.filter(function (cell) {
               return cell.piece && cell.piece.color === color;
             }));
           }
         } catch (err) {
-          _didIteratorError11 = true;
-          _iteratorError11 = err;
+          _didIteratorError9 = true;
+          _iteratorError9 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion11 && _iterator11.return != null) {
-              _iterator11.return();
+            if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
+              _iterator9.return();
             }
           } finally {
-            if (_didIteratorError11) {
-              throw _iteratorError11;
+            if (_didIteratorError9) {
+              throw _iteratorError9;
             }
           }
         }
 
-        var _iteratorNormalCompletion12 = true;
-        var _didIteratorError12 = false;
-        var _iteratorError12 = undefined;
+        var _iteratorNormalCompletion10 = true;
+        var _didIteratorError10 = false;
+        var _iteratorError10 = undefined;
 
         try {
-          for (var _iterator12 = friendlyCells[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-            var cell = _step12.value;
-            var moves = this.getPsuedoLegalsForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col, cell.piece.hasMoved);
-            var _iteratorNormalCompletion13 = true;
-            var _didIteratorError13 = false;
-            var _iteratorError13 = undefined;
+          for (var _iterator10 = friendlyCells[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+            var cell = _step10.value;
+            var moves = this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col);
+            var _iteratorNormalCompletion11 = true;
+            var _didIteratorError11 = false;
+            var _iteratorError11 = undefined;
 
             try {
-              for (var _iterator13 = moves[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-                var move = _step13.value;
-                // create a clone of the board
-                var checkmateTestBoard = [];
-                var _iteratorNormalCompletion14 = true;
-                var _didIteratorError14 = false;
-                var _iteratorError14 = undefined;
+              for (var _iterator11 = moves[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+                var move = _step11.value;
+                var piecePos = move.piecePos;
+                var movePos = move.movePos;
+                var capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
+                this.movePiece(piecePos, movePos);
+                var testPos = this.cells[movePos.row][movePos.col].piece.type == 'king' ? move.movePos : kingPos;
 
-                try {
-                  for (var _iterator14 = tempBoard[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
-                    var _row3 = _step14.value;
-                    checkmateTestBoard.push(_row3.map(function (cell) {
-                      return Object.assign({}, cell);
-                    }));
-                  }
-                } catch (err) {
-                  _didIteratorError14 = true;
-                  _iteratorError14 = err;
-                } finally {
-                  try {
-                    if (!_iteratorNormalCompletion14 && _iterator14.return != null) {
-                      _iterator14.return();
-                    }
-                  } finally {
-                    if (_didIteratorError14) {
-                      throw _iteratorError14;
-                    }
-                  }
-                }
-
-                this.movePiece(checkmateTestBoard, {
-                  row: cell.row,
-                  col: cell.col
-                }, {
-                  row: move.row,
-                  col: move.col
-                });
-                var testPos = cell.piece.type == 'king' ? {
-                  row: move.row,
-                  col: move.col
-                } : kingPos;
-
-                if (!this.isThreatened(checkmateTestBoard, testPos, color)) {
-                  console.log(`${color} king is under check.`);
+                if (!this.isThreatened(testPos, color)) {
+                  //console.log(`${color} king is under check.`);
+                  this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece;
+                  this.cells[movePos.row][movePos.col].piece = capturedPiece;
                   return 'check';
                 }
+
+                this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece;
+                this.cells[movePos.row][movePos.col].piece = capturedPiece;
               }
             } catch (err) {
-              _didIteratorError13 = true;
-              _iteratorError13 = err;
+              _didIteratorError11 = true;
+              _iteratorError11 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion13 && _iterator13.return != null) {
-                  _iterator13.return();
+                if (!_iteratorNormalCompletion11 && _iterator11.return != null) {
+                  _iterator11.return();
                 }
               } finally {
-                if (_didIteratorError13) {
-                  throw _iteratorError13;
+                if (_didIteratorError11) {
+                  throw _iteratorError11;
                 }
               }
             }
-          }
+          } //console.log(`${color} king is under checkmate.`);
+
         } catch (err) {
-          _didIteratorError12 = true;
-          _iteratorError12 = err;
+          _didIteratorError10 = true;
+          _iteratorError10 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion12 && _iterator12.return != null) {
-              _iterator12.return();
+            if (!_iteratorNormalCompletion10 && _iterator10.return != null) {
+              _iterator10.return();
             }
           } finally {
-            if (_didIteratorError12) {
-              throw _iteratorError12;
+            if (_didIteratorError10) {
+              throw _iteratorError10;
             }
           }
         }
 
-        console.log(`${color} king is under checkmate.`);
         return 'checkmate';
+      } //console.log(`${color} king is safe.`);
+
+
+      return 'safe';
+    },
+
+    getAllPieceMovesForColor(color) {
+      var self = this;
+      var friendlyPieces = [];
+      var _iteratorNormalCompletion12 = true;
+      var _didIteratorError12 = false;
+      var _iteratorError12 = undefined;
+
+      try {
+        for (var _iterator12 = this.cells[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+          var row = _step12.value;
+          friendlyPieces = friendlyPieces.concat(row.filter(function (cell) {
+            return cell.piece && cell.piece.color === color;
+          }).map(function (cell) {
+            return {
+              pos: {
+                row: cell.row,
+                col: cell.col
+              },
+              piece: cell.piece,
+              moves: self.trimToLegals(self.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col), color)
+            };
+          }));
+        }
+      } catch (err) {
+        _didIteratorError12 = true;
+        _iteratorError12 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion12 && _iterator12.return != null) {
+            _iterator12.return();
+          }
+        } finally {
+          if (_didIteratorError12) {
+            throw _iteratorError12;
+          }
+        }
       }
 
-      console.log(`${color} king is safe.`);
-      return 'safe';
+      return friendlyPieces;
+    },
+
+    alphaBetaMax(alpha, beta, remainingDepth, isInitialMove) {
+      if (remainingDepth == 0) {
+        return this.evaluateBoard("black");
+      }
+
+      var _iteratorNormalCompletion13 = true;
+      var _didIteratorError13 = false;
+      var _iteratorError13 = undefined;
+
+      try {
+        for (var _iterator13 = this.getAllPieceMovesForColor("black")[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
+          var pieceMove = _step13.value;
+          var _iteratorNormalCompletion14 = true;
+          var _didIteratorError14 = false;
+          var _iteratorError14 = undefined;
+
+          try {
+            for (var _iterator14 = pieceMove.moves[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
+              var move = _step14.value;
+              // for each move, perform move
+              var capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
+              this.movePiece(move.piecePos, move.movePos);
+              var score = this.alphaBetaMin(alpha, beta, remainingDepth - 1);
+
+              if (isInitialMove) {
+                if (score > this.aiMove.value) {
+                  this.aiMove.value = score;
+                  this.aiMove.move = move;
+                }
+
+                this.aiMove.min = Math.min(this.aiMove.min, score);
+                this.cells[move.movePos.row][move.movePos.col].value = score;
+              }
+
+              this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
+              this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
+
+              if (score >= beta) {
+                //console.log(`Returning bc beta: ${score}`);
+                return beta;
+              }
+
+              if (score > alpha) {
+                alpha = score;
+              }
+            }
+          } catch (err) {
+            _didIteratorError14 = true;
+            _iteratorError14 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion14 && _iterator14.return != null) {
+                _iterator14.return();
+              }
+            } finally {
+              if (_didIteratorError14) {
+                throw _iteratorError14;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError13 = true;
+        _iteratorError13 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion13 && _iterator13.return != null) {
+            _iterator13.return();
+          }
+        } finally {
+          if (_didIteratorError13) {
+            throw _iteratorError13;
+          }
+        }
+      }
+
+      return alpha;
+    },
+
+    alphaBetaMin(alpha, beta, remainingDepth) {
+      if (remainingDepth == 0) {
+        return -this.evaluateBoard("white");
+      }
+
+      var _iteratorNormalCompletion15 = true;
+      var _didIteratorError15 = false;
+      var _iteratorError15 = undefined;
+
+      try {
+        for (var _iterator15 = this.getAllPieceMovesForColor("white")[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
+          var pieceMove = _step15.value;
+          var _iteratorNormalCompletion16 = true;
+          var _didIteratorError16 = false;
+          var _iteratorError16 = undefined;
+
+          try {
+            for (var _iterator16 = pieceMove.moves[Symbol.iterator](), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {
+              var move = _step16.value;
+              // for each move, perform move
+              var capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
+              this.movePiece(move.piecePos, move.movePos);
+              var score = this.alphaBetaMax(alpha, beta, remainingDepth - 1, false);
+              this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
+              this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
+
+              if (score <= alpha) {
+                //console.log(`Returning bc alpha: ${score}`);
+                return alpha;
+              }
+
+              if (score < beta) {
+                beta = score;
+              }
+            }
+          } catch (err) {
+            _didIteratorError16 = true;
+            _iteratorError16 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion16 && _iterator16.return != null) {
+                _iterator16.return();
+              }
+            } finally {
+              if (_didIteratorError16) {
+                throw _iteratorError16;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError15 = true;
+        _iteratorError15 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion15 && _iterator15.return != null) {
+            _iterator15.return();
+          }
+        } finally {
+          if (_didIteratorError15) {
+            throw _iteratorError15;
+          }
+        }
+      }
+
+      return beta;
+    },
+
+    evaluateBoard(colorToMove) {
+      if (this.getKingStatus(colorToMove == "white" ? "black" : "white") == "checkmate") return Infinity;
+      var moveCounts = {
+        white: 0,
+        black: 0
+      };
+      var pieceCounts = {
+        white: {
+          pawn: 0,
+          rook: 0,
+          knight: 0,
+          bishop: 0,
+          queen: 0,
+          king: 0
+        },
+        black: {
+          pawn: 0,
+          rook: 0,
+          knight: 0,
+          bishop: 0,
+          queen: 0,
+          king: 0
+        }
+      };
+      var _iteratorNormalCompletion17 = true;
+      var _didIteratorError17 = false;
+      var _iteratorError17 = undefined;
+
+      try {
+        for (var _iterator17 = this.cells[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
+          var row = _step17.value;
+          var _iteratorNormalCompletion18 = true;
+          var _didIteratorError18 = false;
+          var _iteratorError18 = undefined;
+
+          try {
+            for (var _iterator18 = row[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
+              var cell = _step18.value;
+
+              if (cell.piece) {
+                pieceCounts[cell.piece.color][cell.piece.type]++;
+                moveCounts[cell.piece.color] += this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col).length;
+              }
+            }
+          } catch (err) {
+            _didIteratorError18 = true;
+            _iteratorError18 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion18 && _iterator18.return != null) {
+                _iterator18.return();
+              }
+            } finally {
+              if (_didIteratorError18) {
+                throw _iteratorError18;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError17 = true;
+        _iteratorError17 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion17 && _iterator17.return != null) {
+            _iterator17.return();
+          }
+        } finally {
+          if (_didIteratorError17) {
+            throw _iteratorError17;
+          }
+        }
+      }
+
+      var materialScore = 200 * (pieceCounts.black.king - pieceCounts.white.king) + 9 * (pieceCounts.black.queen - pieceCounts.white.queen) + 5 * (pieceCounts.black.rook - pieceCounts.white.rook) + 3 * (pieceCounts.black.knight - pieceCounts.white.knight) + 3 * (pieceCounts.black.bishop - pieceCounts.white.bishop) + 2 * (pieceCounts.black.pawn - pieceCounts.white.pawn);
+      var mobilityScore = 0.1 * (moveCounts.black - moveCounts.white);
+      var score = materialScore + mobilityScore;
+      return score;
     }
 
   }
@@ -2431,8 +2680,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var component = normalizeComponent(
   components_Chessvue_type_script_lang_js_,
-  Chessvue_type_template_id_caf62bb6_render,
-  Chessvue_type_template_id_caf62bb6_staticRenderFns,
+  Chessvue_type_template_id_77795356_render,
+  Chessvue_type_template_id_77795356_staticRenderFns,
   false,
   injectStyles,
   null,
@@ -3215,7 +3464,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 
 
 // module
-exports.push([module.i, ".chessboard{width:640px;height:640px;margin:20px;border:25px solid #333}.black{background-color:#999}.black,.white{float:left;width:80px;height:80px;font-size:50px;text-align:center;display:table-cell;vertical-align:middle}.white{background-color:#fff}.selected{background-color:#7fff00!important;outline:3px solid #000;outline-offset:-3px}.piece:hover,.selected{cursor:pointer}.piece{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.legal-move{background-color:gold!important;outline:3px solid #000;outline-offset:-3px;cursor:pointer}", ""]);
+exports.push([module.i, ".gameover{border-radius:25px;z-index:10;position:absolute;width:200px;height:100px;border:2px solid #000;background-color:#789;top:350px;left:270px}.gameover-text{margin-top:10px;color:#fff;font-weight:700;font-size:120%}.button-group{margin-top:15px}button{background-color:#f14e4e;display:inline-block;padding:.3em 1.2em;margin:0 .1em .1em 0;border:.16em solid hsla(0,0%,100%,0);border-radius:2em;-webkit-box-sizing:border-box;box-sizing:border-box;text-decoration:none;font-family:Roboto,sans-serif;font-weight:300;color:#fff;text-shadow:0 .04em .04em rgba(0,0,0,.35);text-align:center;-webkit-transition:all .2s;transition:all .2s}button:hover{border-color:#fff}.chessboard{width:640px;height:640px;margin:20px;border:25px solid #333}.cell{float:left;width:80px;height:80px;font-size:50px;text-align:center;display:table-cell;vertical-align:middle}.black{background-color:#999}.white{background-color:#fff}.selected{background-color:#7fff00!important;outline:3px solid #000;outline-offset:-3px}.piece:hover,.selected{cursor:pointer}.piece{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.legal-move{background-color:gold!important;outline:3px solid #000;outline-offset:-3px;cursor:pointer}", ""]);
 
 // exports
 
