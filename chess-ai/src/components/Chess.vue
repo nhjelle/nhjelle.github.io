@@ -502,8 +502,15 @@ export default {
         shadeCell(row, col){
             let cell = document.getElementById('chess').shadowRoot.getElementById(`cell-${row}-${col}`);
             if(this.cells[row][col].value){
-                let maxColor = 1 + this.aiMove.value + Math.abs(this.aiMove.min);
-                let adjustedColor = 1 + this.cells[row][col].value + Math.abs(this.aiMove.min);
+                let maxColor;
+                let adjustedColor;
+                if(this.aiMove.min < 0){
+                    maxColor = 1 + this.aiMove.value + Math.abs(this.aiMove.min);
+                    adjustedColor = 1 + this.cells[row][col].value + Math.abs(this.aiMove.min);
+                } else {
+                    maxColor = 1 + this.aiMove.value - this.aiMove.min;
+                    adjustedColor = 1 + this.cells[row][col].value - Math.abs(this.aiMove.min);
+                }
                 let weight = 255 / maxColor;
                 var red = this.rgbToHex(255);
                 var green = this.rgbToHex(255 - Math.min(adjustedColor * weight, 255));
