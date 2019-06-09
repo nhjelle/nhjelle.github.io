@@ -10,10 +10,11 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script src="https://unpkg.com/vue"></script>
+		<script src="./chess-ai/dist/chess-ai.js"></script>
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
-
 		<!-- Sidebar -->
 			<section id="sidebar">
 				<div class="inner">
@@ -32,7 +33,8 @@
 
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
-						<div class="inner">
+						<chess-ai></chess-ai>
+						<!-- <div class="inner">
 							<h2>Interactive Visualization of Chess AI Decision-Making</h2>
 							<div>Nick Hjelle - hjellen@seattleu.edu</div>
 							<div>George Chen - cheng6@seattleu.edu</div>
@@ -41,7 +43,7 @@
 								<li><a href="#one" class="button scrolly">Project Details</a></li>
 								<li><a href="./images/poster.png" class="button scrolly">Poster</a></li>
 							</ul>
-						</div>
+						</div> -->
 					</section>
 
 				<!-- One -->

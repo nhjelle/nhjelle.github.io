@@ -108,10 +108,9 @@ export default {
         },  
         async playAIMove(){
             this.aiThinking = true;
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 500));
             await this.$nextTick(function() {
                 this.alphaBetaMax(-Infinity, Infinity, 4, true);
-                this.aiThinking = false;
                 this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
                 this.aiMove = {value: -Infinity, move: null, min: Infinity};
                 if(this.checkGameover()) return;
@@ -122,7 +121,7 @@ export default {
                 }
             })
         },
-        selectCell(row, col){
+        async selectCell(row, col){
             if(!this.aiThinking){
                 if(this.selectedCell){
                     if(row == this.selectedCell.row && col == this.selectedCell.col){
@@ -143,11 +142,10 @@ export default {
                                 console.log("Game over.");
                                 return;
                             } else {
-                                setTimeout(async () => {
-                                    await this.$nextTick();
-                                    await this.playAIMove();
-                                    this.displayBoard = this.cloneBoard(this.cells);
-                                }, 500);
+                                await this.playAIMove();
+                                await this.$nextTick();
+                                this.displayBoard = this.cloneBoard(this.cells);
+                                this.aiThinking = false;
                             }
                         }
                     }
@@ -587,6 +585,7 @@ export default {
 </script>
 <style>
 .thinking {
+    background-color: white;
     position: relative;
     height: 25px;
     width: 150px;

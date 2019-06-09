@@ -3000,12 +3000,12 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=93ed778a&shadow
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=42b0557a&
-var Chessvue_type_template_id_42b0557a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"thinking"},[(_vm.aiThinking)?_c('span',[_vm._v("AI is thinking...")]):_c('span',[_vm._v("Player turn")])]),_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
-var Chessvue_type_template_id_42b0557a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=175ad94e&
+var Chessvue_type_template_id_175ad94e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"thinking"},[(_vm.aiThinking)?_c('span',[_vm._v("AI is thinking...")]):_c('span',[_vm._v("Player turn")])]),_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
+var Chessvue_type_template_id_175ad94e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=42b0557a&
+// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=175ad94e&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.object.assign.js
 var es6_object_assign = __webpack_require__("f751");
@@ -3219,13 +3219,12 @@ var InitialPieces = __webpack_require__("ef09");
               case 0:
                 _this.aiThinking = true;
                 _context.next = 3;
-                return new Promise(resolve => setTimeout(resolve, 100));
+                return new Promise(resolve => setTimeout(resolve, 500));
 
               case 3:
                 _context.next = 5;
                 return _this.$nextTick(function () {
                   this.alphaBetaMax(-Infinity, Infinity, 4, true);
-                  this.aiThinking = false;
                   this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
                   this.aiMove = {
                     value: -Infinity,
@@ -3292,122 +3291,198 @@ var InitialPieces = __webpack_require__("ef09");
     selectCell(row, col) {
       var _this2 = this;
 
-      if (!this.aiThinking) {
-        if (this.selectedCell) {
-          if (row == this.selectedCell.row && col == this.selectedCell.col) {
-            this.selectedCell = null;
+      return _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2() {
+        var _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, move, piece, pseudoLegals, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, _move;
 
-            if (this.legalMoves && this.legalMoves.length > 0) {
-              var _iteratorNormalCompletion3 = true;
-              var _didIteratorError3 = false;
-              var _iteratorError3 = undefined;
-
-              try {
-                for (var _iterator3 = this.legalMoves[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                  var move = _step3.value;
-                  this.cells[move.row][move.col].legalMove = false;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (_this2.aiThinking) {
+                  _context2.next = 68;
+                  break;
                 }
-              } catch (err) {
+
+                if (!_this2.selectedCell) {
+                  _context2.next = 43;
+                  break;
+                }
+
+                if (!(row == _this2.selectedCell.row && col == _this2.selectedCell.col)) {
+                  _context2.next = 26;
+                  break;
+                }
+
+                _this2.selectedCell = null;
+
+                if (!(_this2.legalMoves && _this2.legalMoves.length > 0)) {
+                  _context2.next = 24;
+                  break;
+                }
+
+                _iteratorNormalCompletion3 = true;
+                _didIteratorError3 = false;
+                _iteratorError3 = undefined;
+                _context2.prev = 8;
+
+                for (_iterator3 = _this2.legalMoves[Symbol.iterator](); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                  move = _step3.value;
+                  _this2.cells[move.row][move.col].legalMove = false;
+                }
+
+                _context2.next = 16;
+                break;
+
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](8);
                 _didIteratorError3 = true;
-                _iteratorError3 = err;
-              } finally {
-                try {
-                  if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-                    _iterator3.return();
-                  }
-                } finally {
-                  if (_didIteratorError3) {
-                    throw _iteratorError3;
-                  }
+                _iteratorError3 = _context2.t0;
+
+              case 16:
+                _context2.prev = 16;
+                _context2.prev = 17;
+
+                if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+                  _iterator3.return();
                 }
-              }
-            }
-          } else {
-            if (this.legalMoves && this.legalMoves.some(cell => cell.row === row && cell.col === col)) {
-              // move piece
-              this.movePiece(this.selectedCell, {
-                row: row,
-                col: col
-              }); // reset selected piece after move
 
-              this.selectCell(this.selectedCell.row, this.selectedCell.col);
-              this.displayBoard = this.cloneBoard(this.cells);
+              case 19:
+                _context2.prev = 19;
 
-              if (this.checkGameover()) {
+                if (!_didIteratorError3) {
+                  _context2.next = 22;
+                  break;
+                }
+
+                throw _iteratorError3;
+
+              case 22:
+                return _context2.finish(19);
+
+              case 23:
+                return _context2.finish(16);
+
+              case 24:
+                _context2.next = 41;
+                break;
+
+              case 26:
+                if (!(_this2.legalMoves && _this2.legalMoves.some(cell => cell.row === row && cell.col === col))) {
+                  _context2.next = 41;
+                  break;
+                }
+
+                // move piece
+                _this2.movePiece(_this2.selectedCell, {
+                  row: row,
+                  col: col
+                }); // reset selected piece after move
+
+
+                _this2.selectCell(_this2.selectedCell.row, _this2.selectedCell.col);
+
+                _this2.displayBoard = _this2.cloneBoard(_this2.cells);
+
+                if (!_this2.checkGameover()) {
+                  _context2.next = 35;
+                  break;
+                }
+
                 console.log("Game over.");
-                return;
-              } else {
-                setTimeout(
-                /*#__PURE__*/
-                _asyncToGenerator(
-                /*#__PURE__*/
-                regeneratorRuntime.mark(function _callee2() {
-                  return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                    while (1) {
-                      switch (_context2.prev = _context2.next) {
-                        case 0:
-                          _context2.next = 2;
-                          return _this2.$nextTick();
+                return _context2.abrupt("return");
 
-                        case 2:
-                          _context2.next = 4;
-                          return _this2.playAIMove();
+              case 35:
+                _context2.next = 37;
+                return _this2.playAIMove();
 
-                        case 4:
-                          _this2.displayBoard = _this2.cloneBoard(_this2.cells);
+              case 37:
+                _context2.next = 39;
+                return _this2.$nextTick();
 
-                        case 5:
-                        case "end":
-                          return _context2.stop();
-                      }
-                    }
-                  }, _callee2);
-                })), 500);
-              }
-            }
-          }
-        } else {
-          // no cell selected
-          var piece = this.cells[row][col].piece;
+              case 39:
+                _this2.displayBoard = _this2.cloneBoard(_this2.cells);
+                _this2.aiThinking = false;
 
-          if (piece && piece.color === 'white') {
-            this.selectedCell = {
-              row: row,
-              col: col
-            };
-            var pseudoLegals = this.getPsuedoLegalsForPiece(piece.type, piece.color, row, col);
-            this.legalMoves = this.trimToLegals(pseudoLegals, "white").map(function (move) {
-              return move.movePos;
-            });
+              case 41:
+                _context2.next = 68;
+                break;
 
-            if (this.legalMoves && this.legalMoves.length > 0) {
-              var _iteratorNormalCompletion4 = true;
-              var _didIteratorError4 = false;
-              var _iteratorError4 = undefined;
+              case 43:
+                // no cell selected
+                piece = _this2.cells[row][col].piece;
 
-              try {
-                for (var _iterator4 = this.legalMoves[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                  var _move = _step4.value;
-                  this.cells[_move.row][_move.col].legalMove = true;
+                if (!(piece && piece.color === 'white')) {
+                  _context2.next = 68;
+                  break;
                 }
-              } catch (err) {
+
+                _this2.selectedCell = {
+                  row: row,
+                  col: col
+                };
+                pseudoLegals = _this2.getPsuedoLegalsForPiece(piece.type, piece.color, row, col);
+                _this2.legalMoves = _this2.trimToLegals(pseudoLegals, "white").map(function (move) {
+                  return move.movePos;
+                });
+
+                if (!(_this2.legalMoves && _this2.legalMoves.length > 0)) {
+                  _context2.next = 68;
+                  break;
+                }
+
+                _iteratorNormalCompletion4 = true;
+                _didIteratorError4 = false;
+                _iteratorError4 = undefined;
+                _context2.prev = 52;
+
+                for (_iterator4 = _this2.legalMoves[Symbol.iterator](); !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                  _move = _step4.value;
+                  _this2.cells[_move.row][_move.col].legalMove = true;
+                }
+
+                _context2.next = 60;
+                break;
+
+              case 56:
+                _context2.prev = 56;
+                _context2.t1 = _context2["catch"](52);
                 _didIteratorError4 = true;
-                _iteratorError4 = err;
-              } finally {
-                try {
-                  if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-                    _iterator4.return();
-                  }
-                } finally {
-                  if (_didIteratorError4) {
-                    throw _iteratorError4;
-                  }
+                _iteratorError4 = _context2.t1;
+
+              case 60:
+                _context2.prev = 60;
+                _context2.prev = 61;
+
+                if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+                  _iterator4.return();
                 }
-              }
+
+              case 63:
+                _context2.prev = 63;
+
+                if (!_didIteratorError4) {
+                  _context2.next = 66;
+                  break;
+                }
+
+                throw _iteratorError4;
+
+              case 66:
+                return _context2.finish(63);
+
+              case 67:
+                return _context2.finish(60);
+
+              case 68:
+              case "end":
+                return _context2.stop();
             }
           }
-        }
-      }
+        }, _callee2, null, [[8, 12, 16, 24], [17,, 19, 23], [52, 56, 60, 68], [61,, 63, 67]]);
+      }))();
     },
 
     createEmptyBoard() {
@@ -4118,8 +4193,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var component = normalizeComponent(
   components_Chessvue_type_script_lang_js_,
-  Chessvue_type_template_id_42b0557a_render,
-  Chessvue_type_template_id_42b0557a_staticRenderFns,
+  Chessvue_type_template_id_175ad94e_render,
+  Chessvue_type_template_id_175ad94e_staticRenderFns,
   false,
   injectStyles,
   null,
@@ -6113,7 +6188,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 
 
 // module
-exports.push([module.i, ".thinking{position:relative;height:25px;width:150px;left:270px;text-align:center;font-size:125%;font-weight:300;border:2px solid #000;border-bottom:0}.gameover{border-radius:25px;z-index:10;position:absolute;width:200px;height:100px;border:2px solid #000;background-color:#789;top:350px;left:270px}.gameover-text{margin-top:10px;color:#fff;font-weight:700;font-size:120%}.button-group{margin-top:15px}button{background-color:#f14e4e;display:inline-block;padding:.3em 1.2em;margin:0 .1em .1em 0;border:.16em solid hsla(0,0%,100%,0);border-radius:2em;-webkit-box-sizing:border-box;box-sizing:border-box;text-decoration:none;font-family:Roboto,sans-serif;font-weight:300;color:#fff;text-shadow:0 .04em .04em rgba(0,0,0,.35);text-align:center;-webkit-transition:all .2s;transition:all .2s}button:hover{border-color:#fff}.chessboard{width:640px;height:640px;margin:0;border:25px solid #333}.cell{float:left;width:80px;height:80px;font-size:50px;text-align:center;display:table-cell;vertical-align:middle}.black{background-color:#999}.white{background-color:#fff}.selected{background-color:#7fff00!important;outline:3px solid #000;outline-offset:-3px}.piece:hover,.selected{cursor:pointer}.piece{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.legal-move{background-color:gold!important;outline:3px solid #000;outline-offset:-3px;cursor:pointer}", ""]);
+exports.push([module.i, ".thinking{background-color:#fff;position:relative;height:25px;width:150px;left:270px;text-align:center;font-size:125%;font-weight:300;border:2px solid #000;border-bottom:0}.gameover{border-radius:25px;z-index:10;position:absolute;width:200px;height:100px;border:2px solid #000;background-color:#789;top:350px;left:270px}.gameover-text{margin-top:10px;color:#fff;font-weight:700;font-size:120%}.button-group{margin-top:15px}button{background-color:#f14e4e;display:inline-block;padding:.3em 1.2em;margin:0 .1em .1em 0;border:.16em solid hsla(0,0%,100%,0);border-radius:2em;-webkit-box-sizing:border-box;box-sizing:border-box;text-decoration:none;font-family:Roboto,sans-serif;font-weight:300;color:#fff;text-shadow:0 .04em .04em rgba(0,0,0,.35);text-align:center;-webkit-transition:all .2s;transition:all .2s}button:hover{border-color:#fff}.chessboard{width:640px;height:640px;margin:0;border:25px solid #333}.cell{float:left;width:80px;height:80px;font-size:50px;text-align:center;display:table-cell;vertical-align:middle}.black{background-color:#999}.white{background-color:#fff}.selected{background-color:#7fff00!important;outline:3px solid #000;outline-offset:-3px}.piece:hover,.selected{cursor:pointer}.piece{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.legal-move{background-color:gold!important;outline:3px solid #000;outline-offset:-3px;cursor:pointer}", ""]);
 
 // exports
 
