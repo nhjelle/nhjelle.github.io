@@ -2511,12 +2511,12 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=93ed778a&shadow
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=529e7ee6&
-var Chessvue_type_template_id_529e7ee6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
-var Chessvue_type_template_id_529e7ee6_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=14ab4c48&
+var Chessvue_type_template_id_14ab4c48_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
+var Chessvue_type_template_id_14ab4c48_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=529e7ee6&
+// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=14ab4c48&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.object.assign.js
 var es6_object_assign = __webpack_require__("f751");
@@ -2691,16 +2691,7 @@ var InitialPieces = __webpack_require__("ef09");
 
     getCellClass(cell, rowIndex, cellIndex) {
       var cellClass = [];
-
-      if (!cell.value || typeof cell.value == 'undefined') {
-        cellClass.push(cell.color);
-      } else {
-        console.log("Has value");
-        cellClass.push({
-          "background-color": "	#A52A2A"
-        });
-      }
-
+      cellClass.push(cell.color);
       if (this.selectedCell && this.selectedCell.row == rowIndex && this.selectedCell.col == cellIndex) cellClass.push('selected');
       if (this.cells[rowIndex][cellIndex].legalMove) cellClass.push('legal-move');
       cellClass.push('cell');
@@ -3691,8 +3682,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var component = normalizeComponent(
   components_Chessvue_type_script_lang_js_,
-  Chessvue_type_template_id_529e7ee6_render,
-  Chessvue_type_template_id_529e7ee6_staticRenderFns,
+  Chessvue_type_template_id_14ab4c48_render,
+  Chessvue_type_template_id_14ab4c48_staticRenderFns,
   false,
   injectStyles,
   null,

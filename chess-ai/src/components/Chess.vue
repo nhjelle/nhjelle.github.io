@@ -86,13 +86,7 @@ export default {
         },
         getCellClass(cell, rowIndex, cellIndex){
             const cellClass = [];
-            if(!cell.value || typeof(cell.value) == 'undefined'){
-                cellClass.push(cell.color);
-            }
-            else {
-                console.log("Has value");
-                cellClass.push({ "background-color": "	#A52A2A"});
-            }
+            cellClass.push(cell.color);
             if(this.selectedCell && this.selectedCell.row == rowIndex && this.selectedCell.col == cellIndex) cellClass.push('selected');
             if(this.cells[rowIndex][cellIndex].legalMove) cellClass.push('legal-move');
             cellClass.push('cell');
