@@ -585,11 +585,11 @@ export default {
 </script>
 <style>
 .thinking {
+    z-index:200;
     background-color: white;
     position: relative;
-    height: 25px;
-    width: 150px;
-    left:270px;
+    width: 200px;
+    left:240px;
     text-align:center;
     font-size:125%;
     font-weight:300;

@@ -3000,12 +3000,12 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=93ed778a&shadow
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=175ad94e&
-var Chessvue_type_template_id_175ad94e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"thinking"},[(_vm.aiThinking)?_c('span',[_vm._v("AI is thinking...")]):_c('span',[_vm._v("Player turn")])]),_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
-var Chessvue_type_template_id_175ad94e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=2f1e5772&
+var Chessvue_type_template_id_2f1e5772_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"thinking"},[(_vm.aiThinking)?_c('span',[_vm._v("AI is thinking...")]):_c('span',[_vm._v("Player turn")])]),_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
+var Chessvue_type_template_id_2f1e5772_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=175ad94e&
+// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=2f1e5772&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.object.assign.js
 var es6_object_assign = __webpack_require__("f751");
@@ -4193,8 +4193,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var component = normalizeComponent(
   components_Chessvue_type_script_lang_js_,
-  Chessvue_type_template_id_175ad94e_render,
-  Chessvue_type_template_id_175ad94e_staticRenderFns,
+  Chessvue_type_template_id_2f1e5772_render,
+  Chessvue_type_template_id_2f1e5772_staticRenderFns,
   false,
   injectStyles,
   null,
@@ -6188,7 +6188,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 
 
 // module
-exports.push([module.i, ".thinking{background-color:#fff;position:relative;height:25px;width:150px;left:270px;text-align:center;font-size:125%;font-weight:300;border:2px solid #000;border-bottom:0}.gameover{border-radius:25px;z-index:10;position:absolute;width:200px;height:100px;border:2px solid #000;background-color:#789;top:350px;left:270px}.gameover-text{margin-top:10px;color:#fff;font-weight:700;font-size:120%}.button-group{margin-top:15px}button{background-color:#f14e4e;display:inline-block;padding:.3em 1.2em;margin:0 .1em .1em 0;border:.16em solid hsla(0,0%,100%,0);border-radius:2em;-webkit-box-sizing:border-box;box-sizing:border-box;text-decoration:none;font-family:Roboto,sans-serif;font-weight:300;color:#fff;text-shadow:0 .04em .04em rgba(0,0,0,.35);text-align:center;-webkit-transition:all .2s;transition:all .2s}button:hover{border-color:#fff}.chessboard{width:640px;height:640px;margin:0;border:25px solid #333}.cell{float:left;width:80px;height:80px;font-size:50px;text-align:center;display:table-cell;vertical-align:middle}.black{background-color:#999}.white{background-color:#fff}.selected{background-color:#7fff00!important;outline:3px solid #000;outline-offset:-3px}.piece:hover,.selected{cursor:pointer}.piece{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.legal-move{background-color:gold!important;outline:3px solid #000;outline-offset:-3px;cursor:pointer}", ""]);
+exports.push([module.i, ".thinking{z-index:200;background-color:#fff;position:relative;width:200px;left:240px;text-align:center;font-size:125%;font-weight:300;border:2px solid #000;border-bottom:0}.gameover{border-radius:25px;z-index:10;position:absolute;width:200px;height:100px;border:2px solid #000;background-color:#789;top:350px;left:270px}.gameover-text{margin-top:10px;color:#fff;font-weight:700;font-size:120%}.button-group{margin-top:15px}button{background-color:#f14e4e;display:inline-block;padding:.3em 1.2em;margin:0 .1em .1em 0;border:.16em solid hsla(0,0%,100%,0);border-radius:2em;-webkit-box-sizing:border-box;box-sizing:border-box;text-decoration:none;font-family:Roboto,sans-serif;font-weight:300;color:#fff;text-shadow:0 .04em .04em rgba(0,0,0,.35);text-align:center;-webkit-transition:all .2s;transition:all .2s}button:hover{border-color:#fff}.chessboard{width:640px;height:640px;margin:0;border:25px solid #333}.cell{float:left;width:80px;height:80px;font-size:50px;text-align:center;display:table-cell;vertical-align:middle}.black{background-color:#999}.white{background-color:#fff}.selected{background-color:#7fff00!important;outline:3px solid #000;outline-offset:-3px}.piece:hover,.selected{cursor:pointer}.piece{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.legal-move{background-color:gold!important;outline:3px solid #000;outline-offset:-3px;cursor:pointer}", ""]);
 
 // exports
 
