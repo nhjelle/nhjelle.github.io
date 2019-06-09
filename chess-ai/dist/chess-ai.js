@@ -2511,12 +2511,12 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=93ed778a&shadow
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=b24c5c38&
-var Chessvue_type_template_id_b24c5c38_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
-var Chessvue_type_template_id_b24c5c38_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=94041be4&
+var Chessvue_type_template_id_94041be4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
+var Chessvue_type_template_id_94041be4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=b24c5c38&
+// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=94041be4&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.object.assign.js
 var es6_object_assign = __webpack_require__("f751");
@@ -2651,6 +2651,7 @@ var InitialPieces = __webpack_require__("ef09");
     this.createEmptyBoard();
     this.placeInitialPieces();
     Object.freeze(this.cells);
+    console.log(this.isCheckmate("white"));
   },
 
   methods: {
@@ -2699,10 +2700,10 @@ var InitialPieces = __webpack_require__("ef09");
     },
 
     checkGameover() {
-      if (this.getKingStatus('white') == 'checkmate') {
+      if (this.isCheckmate('white')) {
         this.winner = "black";
         return true;
-      } else if (this.getKingStatus('black') == 'checkmate') {
+      } else if (this.isCheckmate('black')) {
         this.winner = "white";
         return true;
       }
@@ -3294,117 +3295,28 @@ var InitialPieces = __webpack_require__("ef09");
       };
     },
 
-    getKingStatus(color) {
-      var kingPos = this.getKingPosition(color);
-
-      if (this.isThreatened(kingPos, color)) {
-        // check if checkmate
-        var friendlyCells = [];
-        var _iteratorNormalCompletion9 = true;
-        var _didIteratorError9 = false;
-        var _iteratorError9 = undefined;
-
-        try {
-          for (var _iterator9 = this.cells[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-            var row = _step9.value;
-            friendlyCells = friendlyCells.concat(row.filter(function (cell) {
-              return cell.piece && cell.piece.color === color;
-            }));
-          }
-        } catch (err) {
-          _didIteratorError9 = true;
-          _iteratorError9 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
-              _iterator9.return();
-            }
-          } finally {
-            if (_didIteratorError9) {
-              throw _iteratorError9;
-            }
-          }
-        }
-
-        var _iteratorNormalCompletion10 = true;
-        var _didIteratorError10 = false;
-        var _iteratorError10 = undefined;
-
-        try {
-          for (var _iterator10 = friendlyCells[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-            var cell = _step10.value;
-            var moves = this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col);
-            var _iteratorNormalCompletion11 = true;
-            var _didIteratorError11 = false;
-            var _iteratorError11 = undefined;
-
-            try {
-              for (var _iterator11 = moves[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-                var move = _step11.value;
-                var piecePos = move.piecePos;
-                var movePos = move.movePos;
-                var capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
-                this.movePiece(piecePos, movePos);
-                var testPos = this.cells[movePos.row][movePos.col].piece.type == 'king' ? movePos : kingPos;
-
-                if (!this.isThreatened(testPos, color)) {
-                  //console.log(`${color} king is under check.`);
-                  this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece;
-                  this.cells[movePos.row][movePos.col].piece = capturedPiece;
-                  return 'check';
-                }
-
-                this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece;
-                this.cells[movePos.row][movePos.col].piece = capturedPiece;
-              }
-            } catch (err) {
-              _didIteratorError11 = true;
-              _iteratorError11 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion11 && _iterator11.return != null) {
-                  _iterator11.return();
-                }
-              } finally {
-                if (_didIteratorError11) {
-                  throw _iteratorError11;
-                }
-              }
-            }
-          } //console.log(`${color} king is under checkmate.`);
-
-        } catch (err) {
-          _didIteratorError10 = true;
-          _iteratorError10 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion10 && _iterator10.return != null) {
-              _iterator10.return();
-            }
-          } finally {
-            if (_didIteratorError10) {
-              throw _iteratorError10;
-            }
-          }
-        }
-
-        return 'checkmate';
-      } //console.log(`${color} king is safe.`);
-
-
-      return 'safe';
+    isCheckmate(color) {
+      var self = this;
+      var moves = this.cells.map(function (row) {
+        return row.filter(function (cell) {
+          return cell.piece && cell.piece.color === color;
+        });
+      }).flat().map(function (cell) {
+        return self.trimToLegals(self.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col), color);
+      }).flat();
+      return moves.length === 0;
     },
 
     getAllPieceMovesForColor(color) {
       var self = this;
       var friendlyPieces = [];
-      var _iteratorNormalCompletion12 = true;
-      var _didIteratorError12 = false;
-      var _iteratorError12 = undefined;
+      var _iteratorNormalCompletion9 = true;
+      var _didIteratorError9 = false;
+      var _iteratorError9 = undefined;
 
       try {
-        for (var _iterator12 = this.cells[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-          var row = _step12.value;
+        for (var _iterator9 = this.cells[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+          var row = _step9.value;
           friendlyPieces = friendlyPieces.concat(row.filter(function (cell) {
             return cell.piece && cell.piece.color === color;
           }).map(function (cell) {
@@ -3419,16 +3331,16 @@ var InitialPieces = __webpack_require__("ef09");
           }));
         }
       } catch (err) {
-        _didIteratorError12 = true;
-        _iteratorError12 = err;
+        _didIteratorError9 = true;
+        _iteratorError9 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion12 && _iterator12.return != null) {
-            _iterator12.return();
+          if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
+            _iterator9.return();
           }
         } finally {
-          if (_didIteratorError12) {
-            throw _iteratorError12;
+          if (_didIteratorError9) {
+            throw _iteratorError9;
           }
         }
       }
@@ -3438,23 +3350,23 @@ var InitialPieces = __webpack_require__("ef09");
 
     alphaBetaMax(alpha, beta, remainingDepth, isInitialMove) {
       if (remainingDepth == 0) {
-        return this.evaluateBoard("black");
+        return this.evaluateBoard();
       }
 
-      var _iteratorNormalCompletion13 = true;
-      var _didIteratorError13 = false;
-      var _iteratorError13 = undefined;
+      var _iteratorNormalCompletion10 = true;
+      var _didIteratorError10 = false;
+      var _iteratorError10 = undefined;
 
       try {
-        for (var _iterator13 = this.getAllPieceMovesForColor("black")[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-          var pieceMove = _step13.value;
-          var _iteratorNormalCompletion14 = true;
-          var _didIteratorError14 = false;
-          var _iteratorError14 = undefined;
+        for (var _iterator10 = this.getAllPieceMovesForColor("black")[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+          var pieceMove = _step10.value;
+          var _iteratorNormalCompletion11 = true;
+          var _didIteratorError11 = false;
+          var _iteratorError11 = undefined;
 
           try {
-            for (var _iterator14 = pieceMove.moves[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
-              var move = _step14.value;
+            for (var _iterator11 = pieceMove.moves[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+              var move = _step11.value;
               // for each move, perform move
               var capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
               this.movePiece(move.piecePos, move.movePos);
@@ -3483,31 +3395,31 @@ var InitialPieces = __webpack_require__("ef09");
               }
             }
           } catch (err) {
-            _didIteratorError14 = true;
-            _iteratorError14 = err;
+            _didIteratorError11 = true;
+            _iteratorError11 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion14 && _iterator14.return != null) {
-                _iterator14.return();
+              if (!_iteratorNormalCompletion11 && _iterator11.return != null) {
+                _iterator11.return();
               }
             } finally {
-              if (_didIteratorError14) {
-                throw _iteratorError14;
+              if (_didIteratorError11) {
+                throw _iteratorError11;
               }
             }
           }
         }
       } catch (err) {
-        _didIteratorError13 = true;
-        _iteratorError13 = err;
+        _didIteratorError10 = true;
+        _iteratorError10 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion13 && _iterator13.return != null) {
-            _iterator13.return();
+          if (!_iteratorNormalCompletion10 && _iterator10.return != null) {
+            _iterator10.return();
           }
         } finally {
-          if (_didIteratorError13) {
-            throw _iteratorError13;
+          if (_didIteratorError10) {
+            throw _iteratorError10;
           }
         }
       }
@@ -3517,23 +3429,23 @@ var InitialPieces = __webpack_require__("ef09");
 
     alphaBetaMin(alpha, beta, remainingDepth) {
       if (remainingDepth == 0) {
-        return -this.evaluateBoard("white");
+        return -this.evaluateBoard();
       }
 
-      var _iteratorNormalCompletion15 = true;
-      var _didIteratorError15 = false;
-      var _iteratorError15 = undefined;
+      var _iteratorNormalCompletion12 = true;
+      var _didIteratorError12 = false;
+      var _iteratorError12 = undefined;
 
       try {
-        for (var _iterator15 = this.getAllPieceMovesForColor("white")[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
-          var pieceMove = _step15.value;
-          var _iteratorNormalCompletion16 = true;
-          var _didIteratorError16 = false;
-          var _iteratorError16 = undefined;
+        for (var _iterator12 = this.getAllPieceMovesForColor("white")[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+          var pieceMove = _step12.value;
+          var _iteratorNormalCompletion13 = true;
+          var _didIteratorError13 = false;
+          var _iteratorError13 = undefined;
 
           try {
-            for (var _iterator16 = pieceMove.moves[Symbol.iterator](), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {
-              var move = _step16.value;
+            for (var _iterator13 = pieceMove.moves[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
+              var move = _step13.value;
               // for each move, perform move
               var capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
               this.movePiece(move.piecePos, move.movePos);
@@ -3551,31 +3463,31 @@ var InitialPieces = __webpack_require__("ef09");
               }
             }
           } catch (err) {
-            _didIteratorError16 = true;
-            _iteratorError16 = err;
+            _didIteratorError13 = true;
+            _iteratorError13 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion16 && _iterator16.return != null) {
-                _iterator16.return();
+              if (!_iteratorNormalCompletion13 && _iterator13.return != null) {
+                _iterator13.return();
               }
             } finally {
-              if (_didIteratorError16) {
-                throw _iteratorError16;
+              if (_didIteratorError13) {
+                throw _iteratorError13;
               }
             }
           }
         }
       } catch (err) {
-        _didIteratorError15 = true;
-        _iteratorError15 = err;
+        _didIteratorError12 = true;
+        _iteratorError12 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion15 && _iterator15.return != null) {
-            _iterator15.return();
+          if (!_iteratorNormalCompletion12 && _iterator12.return != null) {
+            _iterator12.return();
           }
         } finally {
-          if (_didIteratorError15) {
-            throw _iteratorError15;
+          if (_didIteratorError12) {
+            throw _iteratorError12;
           }
         }
       }
@@ -3583,8 +3495,7 @@ var InitialPieces = __webpack_require__("ef09");
       return beta;
     },
 
-    evaluateBoard(colorToMove) {
-      if (this.getKingStatus(colorToMove == "white" ? "black" : "white") == "checkmate") return Infinity;
+    evaluateBoard() {
       var moveCounts = {
         white: 0,
         black: 0
@@ -3607,20 +3518,20 @@ var InitialPieces = __webpack_require__("ef09");
           king: 0
         }
       };
-      var _iteratorNormalCompletion17 = true;
-      var _didIteratorError17 = false;
-      var _iteratorError17 = undefined;
+      var _iteratorNormalCompletion14 = true;
+      var _didIteratorError14 = false;
+      var _iteratorError14 = undefined;
 
       try {
-        for (var _iterator17 = this.cells[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
-          var row = _step17.value;
-          var _iteratorNormalCompletion18 = true;
-          var _didIteratorError18 = false;
-          var _iteratorError18 = undefined;
+        for (var _iterator14 = this.cells[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
+          var row = _step14.value;
+          var _iteratorNormalCompletion15 = true;
+          var _didIteratorError15 = false;
+          var _iteratorError15 = undefined;
 
           try {
-            for (var _iterator18 = row[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
-              var cell = _step18.value;
+            for (var _iterator15 = row[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
+              var cell = _step15.value;
 
               if (cell.piece) {
                 pieceCounts[cell.piece.color][cell.piece.type]++;
@@ -3628,31 +3539,31 @@ var InitialPieces = __webpack_require__("ef09");
               }
             }
           } catch (err) {
-            _didIteratorError18 = true;
-            _iteratorError18 = err;
+            _didIteratorError15 = true;
+            _iteratorError15 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion18 && _iterator18.return != null) {
-                _iterator18.return();
+              if (!_iteratorNormalCompletion15 && _iterator15.return != null) {
+                _iterator15.return();
               }
             } finally {
-              if (_didIteratorError18) {
-                throw _iteratorError18;
+              if (_didIteratorError15) {
+                throw _iteratorError15;
               }
             }
           }
         }
       } catch (err) {
-        _didIteratorError17 = true;
-        _iteratorError17 = err;
+        _didIteratorError14 = true;
+        _iteratorError14 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion17 && _iterator17.return != null) {
-            _iterator17.return();
+          if (!_iteratorNormalCompletion14 && _iterator14.return != null) {
+            _iterator14.return();
           }
         } finally {
-          if (_didIteratorError17) {
-            throw _iteratorError17;
+          if (_didIteratorError14) {
+            throw _iteratorError14;
           }
         }
       }
@@ -3682,8 +3593,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var component = normalizeComponent(
   components_Chessvue_type_script_lang_js_,
-  Chessvue_type_template_id_b24c5c38_render,
-  Chessvue_type_template_id_b24c5c38_staticRenderFns,
+  Chessvue_type_template_id_94041be4_render,
+  Chessvue_type_template_id_94041be4_staticRenderFns,
   false,
   injectStyles,
   null,
