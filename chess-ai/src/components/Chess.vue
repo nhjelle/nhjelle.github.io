@@ -56,7 +56,6 @@ export default {
         this.createEmptyBoard();
         this.placeInitialPieces();
         Object.freeze(this.cells);
-        console.log(this.isCheckmate("white"));
     },
     methods: {
         restartGame(){
