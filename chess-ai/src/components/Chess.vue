@@ -55,7 +55,6 @@ export default {
     created() {
         this.createEmptyBoard();
         this.placeInitialPieces();
-        Object.freeze(this.cells);
     },
     methods: {
         restartGame(){
