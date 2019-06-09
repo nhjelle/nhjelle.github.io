@@ -500,7 +500,12 @@ export default {
             return hex;
         },
         shadeCell(row, col){
-            let cell = document.getElementById('chess').shadowRoot.getElementById(`cell-${row}-${col}`);
+            let cell;
+            if(document.querySelector('chess-ai')){
+                cell = document.querySelector('chess-ai').shadowRoot.getElementById(`cell-${row}-${col}`);
+            } else {
+                cell = document.getElementById(`cell-${row}-${col}`);
+            }
             if(this.cells[row][col].value){
                 let maxColor;
                 let adjustedColor;
