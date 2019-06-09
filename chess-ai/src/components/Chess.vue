@@ -1,6 +1,10 @@
 <template>
     <div>
         <div class="chessboard">
+            <div class="gameover" v-if="winner != ''">
+                <div class="gameover-text">The winner is: {{winner}}</div>
+                <div class="button-group"><button @click="restartGame">Play again</button></div>
+            </div>
             <div v-for="(row, rowIndex) in displayBoard" :key="rowIndex">
                 <div :id="'cell-'+rowIndex+'-'+cellIndex" :class="getCellClass(cell, rowIndex, cellIndex)" 
                     @click="selectCell(rowIndex, cellIndex)" v-for="(cell, cellIndex) in row" :key="cellIndex">
@@ -44,14 +48,26 @@ export default {
                         pawn: '&#9823;'
                     }
                 },
-                aiMove: {value: -Infinity, move: null},
+                aiMove: {value: -Infinity, move: null, min: Infinity},
+                winner: ''
             }
     },
     created() {
         this.createEmptyBoard();
         this.placeInitialPieces();
+        Object.freeze(this.cells);
     },
     methods: {
+        restartGame(){
+            this.cells = [];
+            this.legalMoves = [];
+            this.displayBoard = [];
+            this.aiMove = {value: -Infinity, move: null, min: Infinity};
+            this.winner = '';
+            this.selectedCell = null;
+            this.createEmptyBoard();
+            this.placeInitialPieces();
+        },
         capturePiece(piece){
             if(piece.color == 'black'){
                 this.capturedBlackPieces.push(piece);
@@ -59,32 +75,48 @@ export default {
                 this.capturedWhitePieces.push(piece);
             }
         },
-        movePiece(board, startPosition, endPosition){
-            const startPiece = board[startPosition.row][startPosition.col].piece;
-            const endPiece = board[endPosition.row][endPosition.col].piece;
+        movePiece(startPosition, endPosition){
+            const startPiece = this.cells[startPosition.row][startPosition.col].piece;
+            const endPiece = this.cells[endPosition.row][endPosition.col].piece;
             if(endPiece){
                 this.capturePiece(endPiece);
             }
-            board[endPosition.row][endPosition.col].piece = startPiece;
-            board[startPosition.row][startPosition.col].piece = null;
+            this.cells[endPosition.row][endPosition.col].piece = startPiece;
+            this.cells[startPosition.row][startPosition.col].piece = null;
         },
         getCellClass(cell, rowIndex, cellIndex){
             const cellClass = [];
-            cellClass.push(cell.color);
+            if(!cell.value || typeof(cell.value) == 'undefined'){
+                cellClass.push(cell.color);
+            }
+            else {
+                console.log("Has value");
+                cellClass.push({ "background-color": "	#A52A2A"});
+            }
             if(this.selectedCell && this.selectedCell.row == rowIndex && this.selectedCell.col == cellIndex) cellClass.push('selected');
             if(this.cells[rowIndex][cellIndex].legalMove) cellClass.push('legal-move');
+            cellClass.push('cell');
             return cellClass;
         },
+        checkGameover(){
+            if(this.getKingStatus('white') == 'checkmate'){
+                this.winner = "black";
+                return true;
+            } else if(this.getKingStatus('black') == 'checkmate') {
+                this.winner = "white";
+                return true;
+            }
+            return false;
+        },  
         playAIMove(){
-            let alphaBetaBoard = this.cloneBoard(this.cells);
-            console.log(this.alphaBetaMax(alphaBetaBoard, -Infinity, Infinity, 4, true));
-            console.log(this.aiMove);
-            this.movePiece(this.cells, this.aiMove.move.piecePos, this.aiMove.move.movePos);
-            this.aiMove = {value: -Infinity, move: null};
-            if(this.getKingStatus(this.cells, 'white') == 'checkmate' 
-                || this.getKingStatus(this.cells, 'black') == 'checkmate'){
-                console.log("Game over.");
-                // display gameover
+            this.alphaBetaMax(-Infinity, Infinity, 4, true);
+            this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
+            this.aiMove = {value: -Infinity, move: null, min: Infinity};
+            if(this.checkGameover()) return;
+            for(let row of this.cells){
+                for(let cell of row){
+                    cell.value = null;
+                }
             }
         },
         selectCell(row, col){
@@ -100,14 +132,13 @@ export default {
                 } else {
                     if(this.legalMoves && this.legalMoves.some(cell => cell.row === row && cell.col === col)){
                         // move piece
-                        this.movePiece(this.cells, this.selectedCell, {row: row, col: col});
+                        this.movePiece(this.selectedCell, {row: row, col: col});
                         this.displayBoard = this.cloneBoard(this.cells);
                         // reset selected piece after move
                         this.selectCell(this.selectedCell.row, this.selectedCell.col);
-                        if(this.getKingStatus(this.cells, 'white') == 'checkmate' 
-                            || this.getKingStatus(this.cells, 'black') == 'checkmate'){
+                        if(this.checkGameover()){
                             console.log("Game over.");
-                            // display gameover
+                            return;
                         } else {
                             this.playAIMove();
                             this.displayBoard = this.cloneBoard(this.cells);
@@ -120,10 +151,8 @@ export default {
                 let piece = this.cells[row][col].piece;
                 if(piece && piece.color === 'white'){
                     this.selectedCell = {row: row, col: col};
-                    let pseudoLegals = this.getPsuedoLegalsForPiece(this.cells, piece.type, piece.color, row, col);
-                    const kingPos = this.getKingPosition(this.cells, 'white');
-                    let self = this;
-                    this.legalMoves = this.trimToLegals(this.cells, pseudoLegals).map(function(move) { return move.movePos });
+                    let pseudoLegals = this.getPsuedoLegalsForPiece(piece.type, piece.color, row, col);
+                    this.legalMoves = this.trimToLegals(pseudoLegals, "white").map(function(move) { return move.movePos });
                     if(this.legalMoves && this.legalMoves.length > 0){
                         for(let move of this.legalMoves){
                             this.cells[move.row][move.col].legalMove = true;
@@ -159,90 +188,90 @@ export default {
             }
             this.displayBoard = this.cloneBoard(this.cells);
         },
-        getPawnMoves(board, color, row, col){
+        getPawnMoves(color, row, col){
             let moves = [];
             if(color === "white"){
-                if(row === 6 && !board[row-1][col].piece && !board[row-2][col].piece){
+                if(row === 6 && !this.cells[row-1][col].piece && !this.cells[row-2][col].piece){
                     moves.push({
                         row: row-2,
                         col: col
                     });
                 }
-                if(row > 0 && board[row - 1][col].piece === null){
+                if(row > 0 && this.cells[row - 1][col].piece === null){
                     moves.push({
                         row: row-1,
                         col: col
                     });
                 }
                 if(row > 0 && col > 0){
-                    let cellPiece = board[row-1][col-1].piece;
+                    let cellPiece = this.cells[row-1][col-1].piece;
                     if(cellPiece && cellPiece.color != color)
                         moves.push({ row: row-1, col: col-1});
                 }
-                if(row > 0 && col < board.length-1){
-                    let cellPiece = board[row-1][col+1].piece;
+                if(row > 0 && col < this.cells.length-1){
+                    let cellPiece = this.cells[row-1][col+1].piece;
                     if(cellPiece && cellPiece.color != color)
                         moves.push({ row: row-1, col: col+1});
                 }
             } else {
-                if(row === 1 && !board[row+1][col].piece && !board[row+2][col].piece){
+                if(row === 1 && !this.cells[row+1][col].piece && !this.cells[row+2][col].piece){
                     moves.push({
                         row: row+2,
                         col: col
                     });
                 }
-                if(row < board.length-1 && !board[row+1][col].piece && !board[row+2][col].piece){
+                if(row < this.cells.length-1 && !this.cells[row+1][col].piece && !this.cells[row+2][col].piece){
                     moves.push({
                         row: row+1,
                         col: col
                     });
                 }
-                if(row < board.length-1 && col < board.length-1){
-                    let cellPiece = board[row+1][col+1].piece;
+                if(row < this.cells.length-1 && col < this.cells.length-1){
+                    let cellPiece = this.cells[row+1][col+1].piece;
                     if(cellPiece && cellPiece.color != color)
                         moves.push({ row: row+1, col: col+1});
                 }
-                if(row < board.length-1 && col > 0){
-                    let cellPiece = board[row+1][col-1].piece;
+                if(row < this.cells.length-1 && col > 0){
+                    let cellPiece = this.cells[row+1][col-1].piece;
                     if(cellPiece && cellPiece.color != color)
                         moves.push({ row: row+1, col: col-1});
                 }
             }
             return moves;
         },
-        getRookMoves(board, color, row, col){
+        getRookMoves(color, row, col){
             const moves = [];
             for(let i = row-1; i >= 0; i--){
-                if(this.validateMove(board, color, i, col))
+                if(this.validateMove(color, i, col))
                     moves.push({ row: i, col: col});
                 else
                     break;
-                if((board[i][col] || {}).piece) break;
+                if((this.cells[i][col] || {}).piece) break;
             }
-            for(let i = row+1; row < board.length; i++){
-                if(this.validateMove(board, color, i, col))
+            for(let i = row+1; row < this.cells.length; i++){
+                if(this.validateMove(color, i, col))
                     moves.push({ row: i, col: col});
                 else
                     break;
-                if((board[i][col] || {}).piece) break;
+                if((this.cells[i][col] || {}).piece) break;
             }
             for(let i = col-1; i >= 0; i--){
-                if(this.validateMove(board, color, row, i))
+                if(this.validateMove(color, row, i))
                     moves.push({ row: row, col: i});
                 else
                     break;
-                if((board[row][i] || {}).piece) break;
+                if((this.cells[row][i] || {}).piece) break;
             }
-            for(let i = col+1; row < board.length; i++){
-                if(this.validateMove(board, color, row, i))
+            for(let i = col+1; row < this.cells.length; i++){
+                if(this.validateMove(color, row, i))
                     moves.push({ row: row, col: i});
                 else
                     break;
-                if((board[row][i] || {}).piece) break;
+                if((this.cells[row][i] || {}).piece) break;
             }
             return moves;
         },
-        getKnightMoves(board, color, row, col){
+        getKnightMoves(color, row, col){
             const moves = [];
             const offsets = [
                 [-2, 1],
@@ -258,7 +287,7 @@ export default {
             for(let offset of offsets){
                 let newRow = row + offset[0];
                 let newCol = col + offset[1];
-                    if(this.validateMove(board, color, newRow, newCol))
+                    if(this.validateMove(color, newRow, newCol))
                         moves.push({
                             row: newRow,
                             col: newCol
@@ -267,50 +296,50 @@ export default {
 
             return moves;
         },
-        getBishopMoves(board, color, row, col){
+        getBishopMoves(color, row, col){
             const moves = [];
-            for(let i = 1; i < board.length; i++){
-                if(this.validateMove(board, color, row+i, col+i))
+            for(let i = 1; i < this.cells.length; i++){
+                if(this.validateMove(color, row+i, col+i))
                     moves.push({
                         row: row+i,
                         col: col+i
                     });
                 else break;
-                if((board[row+i][col+i] || {}).piece) break;
+                if((this.cells[row+i][col+i] || {}).piece) break;
             }
-            for(let i = 1; i < board.length; i++){
-                if(this.validateMove(board, color, row+i, col-i))
+            for(let i = 1; i < this.cells.length; i++){
+                if(this.validateMove(color, row+i, col-i))
                     moves.push({
                         row: row+i,
                         col: col-i
                     });
                 else break;
-                if((board[row+i][col-i] || {}).piece) break;
+                if((this.cells[row+i][col-i] || {}).piece) break;
             }
-            for(let i = 1; i < board.length; i++){
-                if(this.validateMove(board, color, row-i, col+i))
+            for(let i = 1; i < this.cells.length; i++){
+                if(this.validateMove(color, row-i, col+i))
                     moves.push({
                         row: row-i,
                         col: col+i
                     });
                 else break;
-                if((board[row-i][col+i] || {}).piece) break;
+                if((this.cells[row-i][col+i] || {}).piece) break;
             }
-            for(let i = 1; i < board.length; i++){
-                if(this.validateMove(board, color, row-i, col-i))
+            for(let i = 1; i < this.cells.length; i++){
+                if(this.validateMove(color, row-i, col-i))
                     moves.push({
                         row: row-i,
                         col: col-i
                     });
                 else break;
-                if((board[row-i][col-i] || {}).piece) break;
+                if((this.cells[row-i][col-i] || {}).piece) break;
             }
             return moves;
         },
-        getQueenMoves(board, color, row, col){
-            return this.getRookMoves(board, color, row, col).concat(this.getBishopMoves(board, color, row, col));
+        getQueenMoves(color, row, col){
+            return this.getRookMoves(color, row, col).concat(this.getBishopMoves(color, row, col));
         },
-        getKingMoves(board, color, row, col){
+        getKingMoves(color, row, col){
             const moves = [];
             const offsets = [
                 [0, 1],
@@ -325,7 +354,7 @@ export default {
             for(let offset of offsets){
                 let newRow = row + offset[0];
                 let newCol = col + offset[1];
-                if(this.validateMove(board, color, newRow, newCol))
+                if(this.validateMove(color, newRow, newCol))
                     moves.push({
                         row: newRow,
                         col: newCol
@@ -334,56 +363,59 @@ export default {
 
             return moves;
         },
-        validateMove(board, color, row, col){
-            //console.log(board);
-            if(row >= board.length || col >= board.length || row < 0 || col < 0) return false;
-            const piece = board[row][col].piece;
+        validateMove(color, row, col){
+            if(row >= this.cells.length || col >= this.cells.length || row < 0 || col < 0) return false;
+            const piece = this.cells[row][col].piece;
             return piece == null || piece.color !== color;
         },
-        trimToLegals(board, moves){
+        trimToLegals(moves, color){
             for(let i = moves.length-1; i >= 0; i--){
-                let checkTestBoard = this.cloneBoard(board);
-                this.movePiece(checkTestBoard, moves[i].piecePos, moves[i].movePos);
-                if(this.isThreatened(checkTestBoard, this.getKingPosition(checkTestBoard, 'black'), 'black')){
+                let piecePos = moves[i].piecePos;
+                let movePos = moves[i].movePos;
+                const capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
+                this.movePiece(piecePos, movePos);
+                if(this.isThreatened(this.cells, this.getKingPosition(this.cells, color), color)){
                     moves.splice(i, 1);
                 }
+                this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece
+                this.cells[movePos.row][movePos.col].piece = capturedPiece;
             }
             return moves;
         },
-        getPsuedoLegalsForPiece(board, type, color, row, col){
+        getPsuedoLegalsForPiece(type, color, row, col){
             let moves = [];
             switch(type){
                 case "pawn":
-                    moves = this.getPawnMoves(board, color, row, col);
+                    moves = this.getPawnMoves(color, row, col);
                     break;
                 case "rook":
-                    moves = this.getRookMoves(board, color, row, col);
+                    moves = this.getRookMoves(color, row, col);
                     break;
                 case "knight":
-                    moves = this.getKnightMoves(board, color, row, col);
+                    moves = this.getKnightMoves(color, row, col);
                     break;
                 case "bishop":
-                    moves = this.getBishopMoves(board, color, row, col);
+                    moves = this.getBishopMoves(color, row, col);
                     break;
                 case "queen":
-                    moves = this.getQueenMoves(board, color, row, col);
+                    moves = this.getQueenMoves(color, row, col);
                     break;
                 case "king":
-                    moves = this.getKingMoves(board, color, row, col);
+                    moves = this.getKingMoves(color, row, col);
                     break;
             }
             return moves.map(function(move) {
                 return {piecePos: {row, col}, movePos: move};
             });
         },
-        isThreatened(tempBoard, piecePosition, color){
-            for(let row of tempBoard){
+        isThreatened(piecePosition, color){
+            for(let row of this.cells){
                 for(let cell of row){
                     if(cell.piece && cell.piece.color !== color){
                         // opposing piece, check if it threatens king
-                        const moves = this.getPsuedoLegalsForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col);
+                        const moves = this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col);
                         const threateningMove = moves.filter(function(move){
-                            return move.row === piecePosition.row && move.col === piecePosition.col;
+                            return move.movePos.row == piecePosition.row && move.movePos.col == piecePosition.col;
                         });
                         if(threateningMove && threateningMove.length && threateningMove.length > 0){
                             return true;
@@ -404,9 +436,9 @@ export default {
             }
             return clonedBoard
         },
-        getKingPosition(tempBoard, color){
+        getKingPosition(color){
             let kingCell;
-            for(let row of tempBoard){
+            for(let row of this.cells){
                 kingCell = row.filter(function(cell){
                     return cell.piece && cell.piece.type === 'king' && cell.piece.color === color;
                 });
@@ -417,27 +449,32 @@ export default {
             }
             return {row: kingCell.row, col: kingCell.col};
         },
-        getKingStatus(tempBoard, color){
-            const kingPos = this.getKingPosition(tempBoard, color);
-            if(this.isThreatened(tempBoard, kingPos, color)){
+        getKingStatus(color){
+            const kingPos = this.getKingPosition(color);
+            if(this.isThreatened(kingPos, color)){
                 // check if checkmate
                 let friendlyCells = [];
-                for(let row of tempBoard){
+                for(let row of this.cells){
                     friendlyCells = friendlyCells.concat(row.filter(function(cell){
                         return cell.piece && cell.piece.color === color;
                     }));
                 }
                 for(let cell of friendlyCells){
-                    let moves = this.getPsuedoLegalsForPiece(tempBoard, cell.piece.type, cell.piece.color, cell.row, cell.col);
+                    let moves = this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col);
                     for(let move of moves){
-                        // create a clone of the board
-                        const checkmateTestBoard = this.cloneBoard(tempBoard);
-                        this.movePiece(checkmateTestBoard, move.piecePos, move.movePos);
-                        let testPos = cell.piece.type == 'king' ? move.movePos : kingPos;
-                        if(!this.isThreatened(checkmateTestBoard, testPos, color)){
+                        let piecePos = move.piecePos;
+                        let movePos = move.movePos;
+                        const capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
+                        this.movePiece(piecePos, movePos);
+                        let testPos = this.cells[movePos.row][movePos.col].piece.type == 'king' ? move.movePos : kingPos;
+                        if(!this.isThreatened(testPos, color)){
                             //console.log(`${color} king is under check.`);
+                            this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece
+                            this.cells[movePos.row][movePos.col].piece = capturedPiece;
                             return 'check';
                         }
+                        this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece
+                        this.cells[movePos.row][movePos.col].piece = capturedPiece;
                     }
                 }
                 //console.log(`${color} king is under checkmate.`);
@@ -446,39 +483,42 @@ export default {
             //console.log(`${color} king is safe.`);
             return 'safe';
         },
-        getAllPieceMovesForColor(board, color){
+        getAllPieceMovesForColor(color){
             let self = this;
             let friendlyPieces = [];
-            for(let row of board){
+            for(let row of this.cells){
                 friendlyPieces = friendlyPieces.concat(row.filter(function(cell){
                     return cell.piece && cell.piece.color === color;
                 }).map(function(cell){
                     return { 
                         pos: { row: cell.row, col: cell.col },
                         piece: cell.piece, 
-                        moves: self.trimToLegals(board, self.getPsuedoLegalsForPiece(board, cell.piece.type, cell.piece.color, cell.row, cell.col))
+                        moves: self.trimToLegals(self.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col), color)
                     };
                 }));
             }
             return friendlyPieces;
         },
-        alphaBetaMax(board, alpha, beta, remainingDepth, isInitialMove){
+        alphaBetaMax(alpha, beta, remainingDepth, isInitialMove){
             if(remainingDepth == 0){
-                return this.evaluateBoard(board, "black");
+                return this.evaluateBoard("black");
             }
-            for(let pieceMove of this.getAllPieceMovesForColor(board, "black")){
+            for(let pieceMove of this.getAllPieceMovesForColor("black")){
                 for(let move of pieceMove.moves){
                     // for each move, perform move
-                    let capturedPiece = board[move.movePos.row][move.movePos.col].piece ? Object.assign({}, board[move.movePos.row][move.movePos.col].piece) : null;
-                    this.movePiece(board, move.piecePos, move.movePos);
-                    let score = this.alphaBetaMin(board, alpha, beta, remainingDepth-1);
-                    if(isInitialMove && score > this.aiMove.value){
-                        //console.log("found best");
-                        this.aiMove.value = score;
-                        this.aiMove.move = move;
+                    let capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
+                    this.movePiece(move.piecePos, move.movePos);
+                    let score = this.alphaBetaMin(alpha, beta, remainingDepth-1);
+                    if(isInitialMove){
+                        if(score > this.aiMove.value){
+                            this.aiMove.value = score;
+                            this.aiMove.move = move;
+                        }
+                        this.aiMove.min = Math.min(this.aiMove.min, score);
+                        this.cells[move.movePos.row][move.movePos.col].value = score;
                     }
-                    board[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, board[move.movePos.row][move.movePos.col].piece);
-                    board[move.movePos.row][move.movePos.col].piece = capturedPiece;
+                    this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
+                    this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
                     if(score >= beta){
                         //console.log(`Returning bc beta: ${score}`);
                         return beta;
@@ -490,18 +530,18 @@ export default {
             }
             return alpha;
         },
-        alphaBetaMin(board, alpha, beta, remainingDepth){
+        alphaBetaMin(alpha, beta, remainingDepth){
             if(remainingDepth == 0){
-                return -this.evaluateBoard(board, "white");
+                return -this.evaluateBoard("white");
             }
-            for(let pieceMove of this.getAllPieceMovesForColor(board, "white")){
+            for(let pieceMove of this.getAllPieceMovesForColor("white")){
                 for(let move of pieceMove.moves){
                     // for each move, perform move
-                    let capturedPiece = board[move.movePos.row][move.movePos.col].piece ? Object.assign({}, board[move.movePos.row][move.movePos.col].piece) : null;
-                    this.movePiece(board, move.piecePos, move.movePos);
-                    let score = this.alphaBetaMax(board, alpha, beta, remainingDepth-1, false);
-                    board[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, board[move.movePos.row][move.movePos.col].piece);
-                    board[move.movePos.row][move.movePos.col].piece = capturedPiece;
+                    let capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
+                    this.movePiece(move.piecePos, move.movePos);
+                    let score = this.alphaBetaMax(alpha, beta, remainingDepth-1, false);
+                    this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
+                    this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
                     if(score <= alpha){
                         //console.log(`Returning bc alpha: ${score}`);
                         return alpha;
@@ -513,8 +553,8 @@ export default {
             }
             return beta;
         },
-        evaluateBoard(board, colorToMove){
-            if(this.getKingStatus(board, colorToMove == "white" ? "black" : "white") == "checkmate") return Infinity;
+        evaluateBoard(colorToMove){
+            if(this.getKingStatus(colorToMove == "white" ? "black" : "white") == "checkmate") return Infinity;
             const moveCounts = {
                 white: 0,
                 black: 0
@@ -537,11 +577,11 @@ export default {
                     king: 0
                 }
             };
-            for(let row of board){
+            for(let row of this.cells){
                 for(let cell of row){
                     if(cell.piece){
                         pieceCounts[cell.piece.color][cell.piece.type]++;
-                        moveCounts[cell.piece.color] += this.getPsuedoLegalsForPiece(board, cell.piece.type,
+                        moveCounts[cell.piece.color] += this.getPsuedoLegalsForPiece(cell.piece.type,
                             cell.piece.color, cell.row, cell.col).length;
                     }
                 }   
@@ -551,45 +591,76 @@ export default {
               + 5 * (pieceCounts.black.rook-pieceCounts.white.rook)
               + 3 * (pieceCounts.black.knight-pieceCounts.white.knight)
               + 3 * (pieceCounts.black.bishop-pieceCounts.white.bishop)
-              + 1 * (pieceCounts.black.pawn-pieceCounts.white.pawn);
+              + 2 * (pieceCounts.black.pawn-pieceCounts.white.pawn);
 
-            let mobilityScore = 0; //0.1 * (moveCounts.black-moveCounts.white);
+            let mobilityScore = 0.1 * (moveCounts.black-moveCounts.white);
             let score = (materialScore + mobilityScore);
-            if(score > this.aiMove.value){
-                //console.log(pieceCounts);
-                //console.log(score);
-            }
+
             return score;
         }
     }
 }
 </script>
 <style>
+.gameover {
+    border-radius: 25px;
+    z-index: 10;
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    border: 2px solid black;
+    background-color:lightslategrey;
+    top: 350px;
+    left: 270px;
+}
+.gameover-text {
+    margin-top: 10px;
+    color:white;
+    font-weight: 700;
+    font-size: 120%;
+}
+.button-group {
+    margin-top: 15px;
+}
+button{
+    background-color:#f14e4e;
+    display:inline-block;
+    padding:0.3em 1.2em;
+    margin:0 0.1em 0.1em 0;
+    border:0.16em solid rgba(255,255,255,0);
+    border-radius:2em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#FFFFFF;
+    text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+    text-align:center;
+    transition: all 0.2s;
+}
+button:hover{
+    border-color: rgba(255,255,255,1);
+}
 .chessboard {
     width: 640px;
     height: 640px;
     margin: 20px;
     border: 25px solid #333;
 }
-.black {
+.cell {
     float: left;
     width: 80px;
     height: 80px;
-    background-color: #999;
-      font-size:50px;
-    text-align:center;
-    display: table-cell;
-    vertical-align:middle;
-}
-.white {
-    float: left;
-    width: 80px;
-    height: 80px;
-    background-color: #fff;
     font-size:50px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
+}
+.black {
+    background-color: #999;
+}
+.white {
+    background-color: #fff;
 }
 .selected {
     background-color:chartreuse !important;
