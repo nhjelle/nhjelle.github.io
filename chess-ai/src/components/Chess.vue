@@ -56,6 +56,7 @@ export default {
         this.createEmptyBoard();
         this.placeInitialPieces();
         Object.freeze(this.cells);
+        console.log(this.isCheckmate("white"));
     },
     methods: {
         restartGame(){
@@ -93,10 +94,10 @@ export default {
             return cellClass;
         },
         checkGameover(){
-            if(this.getKingStatus('white') == 'checkmate'){
+            if(this.isCheckmate('white')){
                 this.winner = "black";
                 return true;
-            } else if(this.getKingStatus('black') == 'checkmate') {
+            } else if(this.isCheckmate('black')) {
                 this.winner = "white";
                 return true;
             }
@@ -445,39 +446,18 @@ export default {
             }
             return {row: kingCell.row, col: kingCell.col};
         },
-        getKingStatus(color){
-            const kingPos = this.getKingPosition(color);
-            if(this.isThreatened(kingPos, color)){
-                // check if checkmate
-                let friendlyCells = [];
-                for(let row of this.cells){
-                    friendlyCells = friendlyCells.concat(row.filter(function(cell){
-                        return cell.piece && cell.piece.color === color;
-                    }));
-                }
-                for(let cell of friendlyCells){
-                    let moves = this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col);
-                    for(let move of moves){
-                        let piecePos = move.piecePos;
-                        let movePos = move.movePos;
-                        const capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
-                        this.movePiece(piecePos, movePos);
-                        let testPos = this.cells[movePos.row][movePos.col].piece.type == 'king' ? movePos : kingPos;
-                        if(!this.isThreatened(testPos, color)){
-                            //console.log(`${color} king is under check.`);
-                            this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece
-                            this.cells[movePos.row][movePos.col].piece = capturedPiece;
-                            return 'check';
-                        }
-                        this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece
-                        this.cells[movePos.row][movePos.col].piece = capturedPiece;
-                    }
-                }
-                //console.log(`${color} king is under checkmate.`);
-                return 'checkmate';
-            }
-            //console.log(`${color} king is safe.`);
-            return 'safe';
+        isCheckmate(color){
+            let self = this;
+            let moves = this.cells
+                .map(function(row) {
+                    return row.filter(function(cell){ return cell.piece && cell.piece.color === color; });
+                })
+                .flat()
+                .map(function(cell) {
+                    return self.trimToLegals(self.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col), color);
+                })
+                .flat();
+            return moves.length === 0;
         },
         getAllPieceMovesForColor(color){
             let self = this;
@@ -497,7 +477,7 @@ export default {
         },
         alphaBetaMax(alpha, beta, remainingDepth, isInitialMove){
             if(remainingDepth == 0){
-                return this.evaluateBoard("black");
+                return this.evaluateBoard();
             }
             for(let pieceMove of this.getAllPieceMovesForColor("black")){
                 for(let move of pieceMove.moves){
@@ -528,7 +508,7 @@ export default {
         },
         alphaBetaMin(alpha, beta, remainingDepth){
             if(remainingDepth == 0){
-                return -this.evaluateBoard("white");
+                return -this.evaluateBoard();
             }
             for(let pieceMove of this.getAllPieceMovesForColor("white")){
                 for(let move of pieceMove.moves){
@@ -549,8 +529,7 @@ export default {
             }
             return beta;
         },
-        evaluateBoard(colorToMove){
-            if(this.getKingStatus(colorToMove == "white" ? "black" : "white") == "checkmate") return Infinity;
+        evaluateBoard(){
             const moveCounts = {
                 white: 0,
                 black: 0
