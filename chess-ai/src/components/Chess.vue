@@ -370,7 +370,7 @@ export default {
                 let movePos = moves[i].movePos;
                 const capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
                 this.movePiece(piecePos, movePos);
-                if(this.isThreatened(this.cells, this.getKingPosition(this.cells, color), color)){
+                if(this.isThreatened(this.getKingPosition(color), color)){
                     moves.splice(i, 1);
                 }
                 this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece
@@ -430,7 +430,7 @@ export default {
                     return clonedCell;
                 }));
             }
-            return clonedBoard
+            return clonedBoard;
         },
         getKingPosition(color){
             let kingCell;
@@ -462,7 +462,7 @@ export default {
                         let movePos = move.movePos;
                         const capturedPiece = this.cells[movePos.row][movePos.col].piece ? Object.assign({}, this.cells[movePos.row][movePos.col].piece) : null;
                         this.movePiece(piecePos, movePos);
-                        let testPos = this.cells[movePos.row][movePos.col].piece.type == 'king' ? move.movePos : kingPos;
+                        let testPos = this.cells[movePos.row][movePos.col].piece.type == 'king' ? movePos : kingPos;
                         if(!this.isThreatened(testPos, color)){
                             //console.log(`${color} king is under check.`);
                             this.cells[piecePos.row][piecePos.col].piece = this.cells[movePos.row][movePos.col].piece
