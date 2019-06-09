@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div class="thinking">
+            <span v-if="aiThinking">AI is thinking...</span>
+            <span v-else>Player turn</span>
+        </div>
         <div class="chessboard">
             <div class="gameover" v-if="winner != ''">
                 <div class="gameover-text">The winner is: {{winner}}</div>
@@ -24,6 +28,7 @@ export default {
     },
     data: function(){
             return {
+                aiThinking: false,
                 selectedCell: null,
                 legalMoves: [],
                 cells: [],
@@ -101,56 +106,62 @@ export default {
             }
             return false;
         },  
-        playAIMove(){
-            this.alphaBetaMax(-Infinity, Infinity, 4, true);
-            this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
-            this.aiMove = {value: -Infinity, move: null, min: Infinity};
-            if(this.checkGameover()) return;
-            for(let row of this.cells){
-                for(let cell of row){
-                    cell.value = null;
+        async playAIMove(){
+            this.aiThinking = true;
+            await new Promise(resolve => setTimeout(resolve, 100));
+            await this.$nextTick(function() {
+                this.alphaBetaMax(-Infinity, Infinity, 4, true);
+                this.aiThinking = false;
+                this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
+                this.aiMove = {value: -Infinity, move: null, min: Infinity};
+                if(this.checkGameover()) return;
+                for(let row of this.cells){
+                    for(let cell of row){
+                        cell.value = null;
+                    }
                 }
-            }
+            })
         },
         selectCell(row, col){
-            if(this.selectedCell){
-                if(row == this.selectedCell.row && col == this.selectedCell.col){
-                    this.selectedCell = null;
-                    if(this.legalMoves && this.legalMoves.length > 0){
-                        for(let move of this.legalMoves){
-                            this.cells[move.row][move.col].legalMove = false;
+            if(!this.aiThinking){
+                if(this.selectedCell){
+                    if(row == this.selectedCell.row && col == this.selectedCell.col){
+                        this.selectedCell = null;
+                        if(this.legalMoves && this.legalMoves.length > 0){
+                            for(let move of this.legalMoves){
+                                this.cells[move.row][move.col].legalMove = false;
+                            }
+                        }
+                    } else {
+                        if(this.legalMoves && this.legalMoves.some(cell => cell.row === row && cell.col === col)){
+                            // move piece
+                            this.movePiece(this.selectedCell, {row: row, col: col});
+                            // reset selected piece after move
+                            this.selectCell(this.selectedCell.row, this.selectedCell.col);
+                            this.displayBoard = this.cloneBoard(this.cells);
+                            if(this.checkGameover()){
+                                console.log("Game over.");
+                                return;
+                            } else {
+                                setTimeout(async () => {
+                                    await this.$nextTick();
+                                    await this.playAIMove();
+                                    this.displayBoard = this.cloneBoard(this.cells);
+                                }, 500);
+                            }
                         }
                     }
                 } else {
-                    if(this.legalMoves && this.legalMoves.some(cell => cell.row === row && cell.col === col)){
-                        // move piece
-                        this.movePiece(this.selectedCell, {row: row, col: col});
-                        // reset selected piece after move
-                        this.selectCell(this.selectedCell.row, this.selectedCell.col);
-                        this.displayBoard = this.cloneBoard(this.cells);
-                        if(this.checkGameover()){
-                            console.log("Game over.");
-                            return;
-                        } else {
-                            let self = this;
-                            setTimeout(async () => {
-                                await self.$nextTick();
-                                this.playAIMove();
-                                this.displayBoard = this.cloneBoard(this.cells);
-                            }, 500);
-                        }
-                    }
-                }
-            } else {
-                // no cell selected
-                let piece = this.cells[row][col].piece;
-                if(piece && piece.color === 'white'){
-                    this.selectedCell = {row: row, col: col};
-                    let pseudoLegals = this.getPsuedoLegalsForPiece(piece.type, piece.color, row, col);
-                    this.legalMoves = this.trimToLegals(pseudoLegals, "white").map(function(move) { return move.movePos });
-                    if(this.legalMoves && this.legalMoves.length > 0){
-                        for(let move of this.legalMoves){
-                            this.cells[move.row][move.col].legalMove = true;
+                    // no cell selected
+                    let piece = this.cells[row][col].piece;
+                    if(piece && piece.color === 'white'){
+                        this.selectedCell = {row: row, col: col};
+                        let pseudoLegals = this.getPsuedoLegalsForPiece(piece.type, piece.color, row, col);
+                        this.legalMoves = this.trimToLegals(pseudoLegals, "white").map(function(move) { return move.movePos });
+                        if(this.legalMoves && this.legalMoves.length > 0){
+                            for(let move of this.legalMoves){
+                                this.cells[move.row][move.col].legalMove = true;
+                            }
                         }
                     }
                 }
@@ -192,7 +203,7 @@ export default {
                         col: col
                     });
                 }
-                if(row > 0 && this.cells[row - 1][col].piece === null){
+                if(row > 0 && !this.cells[row - 1][col].piece){
                     moves.push({
                         row: row-1,
                         col: col
@@ -215,7 +226,7 @@ export default {
                         col: col
                     });
                 }
-                if(row < this.cells.length-1 && !this.cells[row+1][col].piece && !this.cells[row+2][col].piece){
+                if(row < this.cells.length-1 && !this.cells[row+1][col].piece){
                     moves.push({
                         row: row+1,
                         col: col
@@ -575,6 +586,17 @@ export default {
 }
 </script>
 <style>
+.thinking {
+    position: relative;
+    height: 25px;
+    width: 150px;
+    left:270px;
+    text-align:center;
+    font-size:125%;
+    font-weight:300;
+    border: 2px solid black;
+    border-bottom: 0;
+}
 .gameover {
     border-radius: 25px;
     z-index: 10;
@@ -617,7 +639,7 @@ button:hover{
 .chessboard {
     width: 640px;
     height: 640px;
-    margin: 20px;
+    margin: 0px;
     border: 25px solid #333;
 }
 .cell {
