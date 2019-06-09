@@ -500,8 +500,7 @@ export default {
             return hex;
         },
         shadeCell(row, col){
-            const offset = 8 * row + col;
-            let cell = document.querySelectorAll(".cell")[offset];
+            let cell = document.getElementById('chess').shadowRoot.getElementById(`cell-${row}-${col}`);
             if(this.cells[row][col].value){
                 let maxColor = 1 + this.aiMove.value + Math.abs(this.aiMove.min);
                 let adjustedColor = 1 + this.cells[row][col].value + Math.abs(this.aiMove.min);
