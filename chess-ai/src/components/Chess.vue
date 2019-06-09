@@ -128,21 +128,23 @@ export default {
                             this.cells[move.row][move.col].legalMove = false;
                         }
                     }
-                    return;
                 } else {
                     if(this.legalMoves && this.legalMoves.some(cell => cell.row === row && cell.col === col)){
                         // move piece
                         this.movePiece(this.selectedCell, {row: row, col: col});
-                        this.displayBoard = this.cloneBoard(this.cells);
                         // reset selected piece after move
                         this.selectCell(this.selectedCell.row, this.selectedCell.col);
+                        this.displayBoard = this.cloneBoard(this.cells);
                         if(this.checkGameover()){
                             console.log("Game over.");
                             return;
                         } else {
-                            this.playAIMove();
-                            this.displayBoard = this.cloneBoard(this.cells);
-                            // AI move
+                            let self = this;
+                            setTimeout(async () => {
+                                await self.$nextTick();
+                                this.playAIMove();
+                                this.displayBoard = this.cloneBoard(this.cells);
+                            }, 500);
                         }
                     }
                 }
@@ -587,10 +589,10 @@ export default {
                 }   
             }
             let materialScore = 200  * (pieceCounts.black.king-pieceCounts.white.king)
-              + 9 * (pieceCounts.black.queen-pieceCounts.white.queen)
-              + 5 * (pieceCounts.black.rook-pieceCounts.white.rook)
-              + 3 * (pieceCounts.black.knight-pieceCounts.white.knight)
-              + 3 * (pieceCounts.black.bishop-pieceCounts.white.bishop)
+              + 10 * (pieceCounts.black.queen-pieceCounts.white.queen)
+              + 6 * (pieceCounts.black.rook-pieceCounts.white.rook)
+              + 4 * (pieceCounts.black.knight-pieceCounts.white.knight)
+              + 4 * (pieceCounts.black.bishop-pieceCounts.white.bishop)
               + 2 * (pieceCounts.black.pawn-pieceCounts.white.pawn);
 
             let mobilityScore = 0.1 * (moveCounts.black-moveCounts.white);
