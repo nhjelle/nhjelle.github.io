@@ -54,7 +54,8 @@ export default {
                     }
                 },
                 aiMove: {value: -Infinity, move: null, min: Infinity},
-                winner: ''
+                winner: '',
+                shadedCells: {}
             }
     },
     created() {
@@ -69,6 +70,8 @@ export default {
             this.aiMove = {value: -Infinity, move: null, min: Infinity};
             this.winner = '';
             this.selectedCell = null;
+            this.shadedCells = [];
+            this.reshadeCells();
             this.createEmptyBoard();
             this.placeInitialPieces();
         },
@@ -109,17 +112,18 @@ export default {
         async playAIMove(){
             this.aiThinking = true;
             await new Promise(resolve => setTimeout(resolve, 500));
-            await this.$nextTick(function() {
-                this.alphaBetaMax(-Infinity, Infinity, 4, true);
-                this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
-                this.aiMove = {value: -Infinity, move: null, min: Infinity};
-                if(this.checkGameover()) return;
-                for(let row of this.cells){
-                    for(let cell of row){
-                        cell.value = null;
-                    }
-                }
-            })
+            await this.$nextTick();
+            await this.alphaBetaMax(-Infinity, Infinity, 4, true);
+            this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
+            this.aiMove = {value: -Infinity, move: null, min: Infinity};
+            if(this.checkGameover()) return;
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            for(let cell of Object.keys(this.shadedCells)){
+                let cellPosition = cell.split(",").map(x => Number(x));
+                this.cells[cellPosition[0]][cellPosition[1]].value = null;
+            }
+            this.reshadeCells();
+            this.shadedCells = {};
         },
         async selectCell(row, col){
             if(!this.aiThinking){
@@ -482,7 +486,35 @@ export default {
             }
             return friendlyPieces;
         },
-        alphaBetaMax(alpha, beta, remainingDepth, isInitialMove){
+        reshadeCells(){
+            for(let shadedCell of Object.keys(this.shadedCells)){
+                let cellPosition = shadedCell.split(",").map(x => Number(x));
+                this.shadeCell(cellPosition[0], cellPosition[1]);
+            }
+        },
+        rgbToHex(rgb){
+            var hex = Math.round(Number(rgb)).toString(16);
+            if (hex.length < 2) {
+                hex = "0" + hex;
+            }
+            return hex;
+        },
+        shadeCell(row, col){
+            const offset = 8 * row + col;
+            let cell = document.querySelectorAll(".cell")[offset];
+            if(this.cells[row][col].value){
+                let maxColor = 1 + this.aiMove.value + Math.abs(this.aiMove.min);
+                let adjustedColor = 1 + this.cells[row][col].value + Math.abs(this.aiMove.min);
+                let weight = 255 / maxColor;
+                var red = this.rgbToHex(255);
+                var green = this.rgbToHex(255 - Math.min(adjustedColor * weight, 255));
+                var blue = this.rgbToHex(0);
+                cell.style.backgroundColor = '#' + red+green+blue;
+            } else {
+                cell.style.backgroundColor = this.cells[row][col].color === 'white' ? '#fff' : '#999';
+            }
+        },
+        async alphaBetaMax(alpha, beta, remainingDepth, isInitialMove){
             if(remainingDepth == 0){
                 return this.evaluateBoard();
             }
@@ -491,14 +523,21 @@ export default {
                     // for each move, perform move
                     let capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
                     this.movePiece(move.piecePos, move.movePos);
-                    let score = this.alphaBetaMin(alpha, beta, remainingDepth-1);
+                    let score = await this.alphaBetaMin(alpha, beta, remainingDepth-1);
                     if(isInitialMove){
                         if(score > this.aiMove.value){
                             this.aiMove.value = score;
                             this.aiMove.move = move;
                         }
-                        this.aiMove.min = Math.min(this.aiMove.min, score);
-                        this.cells[move.movePos.row][move.movePos.col].value = score;
+                        this.aiMove.min = this.aiMove.min ? Math.min(this.aiMove.min, score) : Infinity;
+                        if(!this.cells[move.movePos.row][move.movePos.col].value)
+                            this.cells[move.movePos.row][move.movePos.col].value = score;
+                        else
+                            this.cells[move.movePos.row][move.movePos.col].value = Math.max(score, this.cells[move.movePos.row][move.movePos.col].value);
+                        this.shadedCells[`${move.movePos.row},${move.movePos.col}`] = this.cells[move.movePos.row][move.movePos.col].value;
+                        this.reshadeCells();
+                        await new Promise(resolve => setTimeout(resolve, 50));
+                        await this.$nextTick();
                     }
                     this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
                     this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
@@ -513,7 +552,7 @@ export default {
             }
             return alpha;
         },
-        alphaBetaMin(alpha, beta, remainingDepth){
+        async alphaBetaMin(alpha, beta, remainingDepth){
             if(remainingDepth == 0){
                 return -this.evaluateBoard();
             }
@@ -522,7 +561,7 @@ export default {
                     // for each move, perform move
                     let capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
                     this.movePiece(move.piecePos, move.movePos);
-                    let score = this.alphaBetaMax(alpha, beta, remainingDepth-1, false);
+                    let score = await this.alphaBetaMax(alpha, beta, remainingDepth-1, false);
                     this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
                     this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
                     if(score <= alpha){

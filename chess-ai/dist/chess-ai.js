@@ -1742,6 +1742,18 @@ exports.f = __webpack_require__("2b4c");
 
 /***/ }),
 
+/***/ "3846":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 21.2.5.3 get RegExp.prototype.flags()
+if (__webpack_require__("9e1e") && /./g.flags != 'g') __webpack_require__("86cc").f(RegExp.prototype, 'flags', {
+  configurable: true,
+  get: __webpack_require__("0bfb")
+});
+
+
+/***/ }),
+
 /***/ "38fd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3000,24 +3012,27 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=93ed778a&shadow
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=2f1e5772&
-var Chessvue_type_template_id_2f1e5772_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"thinking"},[(_vm.aiThinking)?_c('span',[_vm._v("AI is thinking...")]):_c('span',[_vm._v("Player turn")])]),_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
-var Chessvue_type_template_id_2f1e5772_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0a2faf11-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=template&id=6c2183c8&
+var Chessvue_type_template_id_6c2183c8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"thinking"},[(_vm.aiThinking)?_c('span',[_vm._v("AI is thinking...")]):_c('span',[_vm._v("Player turn")])]),_c('div',{staticClass:"chessboard"},[(_vm.winner != '')?_c('div',{staticClass:"gameover"},[_c('div',{staticClass:"gameover-text"},[_vm._v("The winner is: "+_vm._s(_vm.winner))]),_c('div',{staticClass:"button-group"},[_c('button',{on:{"click":_vm.restartGame}},[_vm._v("Play again")])])]):_vm._e(),_vm._l((_vm.displayBoard),function(row,rowIndex){return _c('div',{key:rowIndex},_vm._l((row),function(cell,cellIndex){return _c('div',{key:cellIndex,class:_vm.getCellClass(cell, rowIndex, cellIndex),attrs:{"id":'cell-'+rowIndex+'-'+cellIndex},on:{"click":function($event){return _vm.selectCell(rowIndex, cellIndex)}}},[(cell.piece)?_c('span',{staticClass:"piece",attrs:{"unselectable":"on"},domProps:{"innerHTML":_vm._s(_vm.pieceCodes[cell.piece.color][cell.piece.type])}}):_vm._e()])}),0)})],2)])}
+var Chessvue_type_template_id_6c2183c8_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=2f1e5772&
+// CONCATENATED MODULE: ./src/components/Chess.vue?vue&type=template&id=6c2183c8&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.to-string.js
+var es6_regexp_to_string = __webpack_require__("6b54");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.object.assign.js
 var es6_object_assign = __webpack_require__("f751");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
-var es6_regexp_split = __webpack_require__("28a5");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es7.symbol.async-iterator.js
 var es7_symbol_async_iterator = __webpack_require__("ac4d");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.symbol.js
 var es6_symbol = __webpack_require__("8a81");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
+var es6_regexp_split = __webpack_require__("28a5");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
@@ -3074,6 +3089,7 @@ function _asyncToGenerator(fn) {
 var InitialPieces = __webpack_require__("ef09");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Chess.vue?vue&type=script&lang=js&
+
 
 
 
@@ -3141,7 +3157,8 @@ var InitialPieces = __webpack_require__("ef09");
         move: null,
         min: Infinity
       },
-      winner: ''
+      winner: '',
+      shadedCells: {}
     };
   },
 
@@ -3162,6 +3179,8 @@ var InitialPieces = __webpack_require__("ef09");
       };
       this.winner = '';
       this.selectedCell = null;
+      this.shadedCells = [];
+      this.reshadeCells();
       this.createEmptyBoard();
       this.placeInitialPieces();
     },
@@ -3213,6 +3232,8 @@ var InitialPieces = __webpack_require__("ef09");
       return _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
+        var _i, _Object$keys, cell, cellPosition;
+
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -3223,63 +3244,44 @@ var InitialPieces = __webpack_require__("ef09");
 
               case 3:
                 _context.next = 5;
-                return _this.$nextTick(function () {
-                  this.alphaBetaMax(-Infinity, Infinity, 4, true);
-                  this.movePiece(this.aiMove.move.piecePos, this.aiMove.move.movePos);
-                  this.aiMove = {
-                    value: -Infinity,
-                    move: null,
-                    min: Infinity
-                  };
-                  if (this.checkGameover()) return;
-                  var _iteratorNormalCompletion = true;
-                  var _didIteratorError = false;
-                  var _iteratorError = undefined;
-
-                  try {
-                    for (var _iterator = this.cells[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                      var row = _step.value;
-                      var _iteratorNormalCompletion2 = true;
-                      var _didIteratorError2 = false;
-                      var _iteratorError2 = undefined;
-
-                      try {
-                        for (var _iterator2 = row[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                          var cell = _step2.value;
-                          cell.value = null;
-                        }
-                      } catch (err) {
-                        _didIteratorError2 = true;
-                        _iteratorError2 = err;
-                      } finally {
-                        try {
-                          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                            _iterator2.return();
-                          }
-                        } finally {
-                          if (_didIteratorError2) {
-                            throw _iteratorError2;
-                          }
-                        }
-                      }
-                    }
-                  } catch (err) {
-                    _didIteratorError = true;
-                    _iteratorError = err;
-                  } finally {
-                    try {
-                      if (!_iteratorNormalCompletion && _iterator.return != null) {
-                        _iterator.return();
-                      }
-                    } finally {
-                      if (_didIteratorError) {
-                        throw _iteratorError;
-                      }
-                    }
-                  }
-                });
+                return _this.$nextTick();
 
               case 5:
+                _context.next = 7;
+                return _this.alphaBetaMax(-Infinity, Infinity, 4, true);
+
+              case 7:
+                _this.movePiece(_this.aiMove.move.piecePos, _this.aiMove.move.movePos);
+
+                _this.aiMove = {
+                  value: -Infinity,
+                  move: null,
+                  min: Infinity
+                };
+
+                if (!_this.checkGameover()) {
+                  _context.next = 11;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 11:
+                _context.next = 13;
+                return new Promise(resolve => setTimeout(resolve, 2000));
+
+              case 13:
+                for (_i = 0, _Object$keys = Object.keys(_this.shadedCells); _i < _Object$keys.length; _i++) {
+                  cell = _Object$keys[_i];
+                  cellPosition = cell.split(",").map(x => Number(x));
+                  _this.cells[cellPosition[0]][cellPosition[1]].value = null;
+                }
+
+                _this.reshadeCells();
+
+                _this.shadedCells = {};
+
+              case 16:
               case "end":
                 return _context.stop();
             }
@@ -3294,7 +3296,7 @@ var InitialPieces = __webpack_require__("ef09");
       return _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2() {
-        var _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, move, piece, pseudoLegals, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, _move;
+        var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, move, piece, pseudoLegals, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, _move;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -3322,13 +3324,13 @@ var InitialPieces = __webpack_require__("ef09");
                   break;
                 }
 
-                _iteratorNormalCompletion3 = true;
-                _didIteratorError3 = false;
-                _iteratorError3 = undefined;
+                _iteratorNormalCompletion = true;
+                _didIteratorError = false;
+                _iteratorError = undefined;
                 _context2.prev = 8;
 
-                for (_iterator3 = _this2.legalMoves[Symbol.iterator](); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                  move = _step3.value;
+                for (_iterator = _this2.legalMoves[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                  move = _step.value;
                   _this2.cells[move.row][move.col].legalMove = false;
                 }
 
@@ -3338,26 +3340,26 @@ var InitialPieces = __webpack_require__("ef09");
               case 12:
                 _context2.prev = 12;
                 _context2.t0 = _context2["catch"](8);
-                _didIteratorError3 = true;
-                _iteratorError3 = _context2.t0;
+                _didIteratorError = true;
+                _iteratorError = _context2.t0;
 
               case 16:
                 _context2.prev = 16;
                 _context2.prev = 17;
 
-                if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-                  _iterator3.return();
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                  _iterator.return();
                 }
 
               case 19:
                 _context2.prev = 19;
 
-                if (!_didIteratorError3) {
+                if (!_didIteratorError) {
                   _context2.next = 22;
                   break;
                 }
 
-                throw _iteratorError3;
+                throw _iteratorError;
 
               case 22:
                 return _context2.finish(19);
@@ -3433,13 +3435,13 @@ var InitialPieces = __webpack_require__("ef09");
                   break;
                 }
 
-                _iteratorNormalCompletion4 = true;
-                _didIteratorError4 = false;
-                _iteratorError4 = undefined;
+                _iteratorNormalCompletion2 = true;
+                _didIteratorError2 = false;
+                _iteratorError2 = undefined;
                 _context2.prev = 52;
 
-                for (_iterator4 = _this2.legalMoves[Symbol.iterator](); !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                  _move = _step4.value;
+                for (_iterator2 = _this2.legalMoves[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                  _move = _step2.value;
                   _this2.cells[_move.row][_move.col].legalMove = true;
                 }
 
@@ -3449,26 +3451,26 @@ var InitialPieces = __webpack_require__("ef09");
               case 56:
                 _context2.prev = 56;
                 _context2.t1 = _context2["catch"](52);
-                _didIteratorError4 = true;
-                _iteratorError4 = _context2.t1;
+                _didIteratorError2 = true;
+                _iteratorError2 = _context2.t1;
 
               case 60:
                 _context2.prev = 60;
                 _context2.prev = 61;
 
-                if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-                  _iterator4.return();
+                if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                  _iterator2.return();
                 }
 
               case 63:
                 _context2.prev = 63;
 
-                if (!_didIteratorError4) {
+                if (!_didIteratorError2) {
                   _context2.next = 66;
                   break;
                 }
 
-                throw _iteratorError4;
+                throw _iteratorError2;
 
               case 66:
                 return _context2.finish(63);
@@ -3595,28 +3597,28 @@ var InitialPieces = __webpack_require__("ef09");
         if ((this.cells[i][col] || {}).piece) break;
       }
 
-      for (var _i = row + 1; row < this.cells.length; _i++) {
-        if (this.validateMove(color, _i, col)) moves.push({
-          row: _i,
+      for (var _i2 = row + 1; row < this.cells.length; _i2++) {
+        if (this.validateMove(color, _i2, col)) moves.push({
+          row: _i2,
           col: col
         });else break;
-        if ((this.cells[_i][col] || {}).piece) break;
+        if ((this.cells[_i2][col] || {}).piece) break;
       }
 
-      for (var _i2 = col - 1; _i2 >= 0; _i2--) {
-        if (this.validateMove(color, row, _i2)) moves.push({
-          row: row,
-          col: _i2
-        });else break;
-        if ((this.cells[row][_i2] || {}).piece) break;
-      }
-
-      for (var _i3 = col + 1; row < this.cells.length; _i3++) {
+      for (var _i3 = col - 1; _i3 >= 0; _i3--) {
         if (this.validateMove(color, row, _i3)) moves.push({
           row: row,
           col: _i3
         });else break;
         if ((this.cells[row][_i3] || {}).piece) break;
+      }
+
+      for (var _i4 = col + 1; row < this.cells.length; _i4++) {
+        if (this.validateMove(color, row, _i4)) moves.push({
+          row: row,
+          col: _i4
+        });else break;
+        if ((this.cells[row][_i4] || {}).piece) break;
       }
 
       return moves;
@@ -3626,8 +3628,8 @@ var InitialPieces = __webpack_require__("ef09");
       var moves = [];
       var offsets = [[-2, 1], [-2, -1], [2, 1], [2, -1], [-1, -2], [-1, 2], [1, -2], [1, 2]];
 
-      for (var _i4 = 0, _offsets = offsets; _i4 < _offsets.length; _i4++) {
-        var offset = _offsets[_i4];
+      for (var _i5 = 0, _offsets = offsets; _i5 < _offsets.length; _i5++) {
+        var offset = _offsets[_i5];
         var newRow = row + offset[0];
         var newCol = col + offset[1];
         if (this.validateMove(color, newRow, newCol)) moves.push({
@@ -3650,28 +3652,28 @@ var InitialPieces = __webpack_require__("ef09");
         if ((this.cells[row + i][col + i] || {}).piece) break;
       }
 
-      for (var _i5 = 1; _i5 < this.cells.length; _i5++) {
-        if (this.validateMove(color, row + _i5, col - _i5)) moves.push({
-          row: row + _i5,
-          col: col - _i5
-        });else break;
-        if ((this.cells[row + _i5][col - _i5] || {}).piece) break;
-      }
-
       for (var _i6 = 1; _i6 < this.cells.length; _i6++) {
-        if (this.validateMove(color, row - _i6, col + _i6)) moves.push({
-          row: row - _i6,
-          col: col + _i6
+        if (this.validateMove(color, row + _i6, col - _i6)) moves.push({
+          row: row + _i6,
+          col: col - _i6
         });else break;
-        if ((this.cells[row - _i6][col + _i6] || {}).piece) break;
+        if ((this.cells[row + _i6][col - _i6] || {}).piece) break;
       }
 
       for (var _i7 = 1; _i7 < this.cells.length; _i7++) {
-        if (this.validateMove(color, row - _i7, col - _i7)) moves.push({
+        if (this.validateMove(color, row - _i7, col + _i7)) moves.push({
           row: row - _i7,
-          col: col - _i7
+          col: col + _i7
         });else break;
-        if ((this.cells[row - _i7][col - _i7] || {}).piece) break;
+        if ((this.cells[row - _i7][col + _i7] || {}).piece) break;
+      }
+
+      for (var _i8 = 1; _i8 < this.cells.length; _i8++) {
+        if (this.validateMove(color, row - _i8, col - _i8)) moves.push({
+          row: row - _i8,
+          col: col - _i8
+        });else break;
+        if ((this.cells[row - _i8][col - _i8] || {}).piece) break;
       }
 
       return moves;
@@ -3685,8 +3687,8 @@ var InitialPieces = __webpack_require__("ef09");
       var moves = [];
       var offsets = [[0, 1], [0, -1], [1, 0], [1, 1], [1, -1], [-1, 0], [-1, 1], [-1, -1]];
 
-      for (var _i8 = 0, _offsets2 = offsets; _i8 < _offsets2.length; _i8++) {
-        var offset = _offsets2[_i8];
+      for (var _i9 = 0, _offsets2 = offsets; _i9 < _offsets2.length; _i9++) {
+        var offset = _offsets2[_i9];
         var newRow = row + offset[0];
         var newCol = col + offset[1];
         if (this.validateMove(color, newRow, newCol)) moves.push({
@@ -3763,20 +3765,20 @@ var InitialPieces = __webpack_require__("ef09");
     },
 
     isThreatened(piecePosition, color) {
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator5 = this.cells[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var row = _step5.value;
-          var _iteratorNormalCompletion6 = true;
-          var _didIteratorError6 = false;
-          var _iteratorError6 = undefined;
+        for (var _iterator3 = this.cells[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var row = _step3.value;
+          var _iteratorNormalCompletion4 = true;
+          var _didIteratorError4 = false;
+          var _iteratorError4 = undefined;
 
           try {
-            for (var _iterator6 = row[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-              var cell = _step6.value;
+            for (var _iterator4 = row[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+              var cell = _step4.value;
 
               if (cell.piece && cell.piece.color !== color) {
                 // opposing piece, check if it threatens king
@@ -3791,19 +3793,52 @@ var InitialPieces = __webpack_require__("ef09");
               }
             }
           } catch (err) {
-            _didIteratorError6 = true;
-            _iteratorError6 = err;
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion6 && _iterator6.return != null) {
-                _iterator6.return();
+              if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+                _iterator4.return();
               }
             } finally {
-              if (_didIteratorError6) {
-                throw _iteratorError6;
+              if (_didIteratorError4) {
+                throw _iteratorError4;
               }
             }
           }
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      return false;
+    },
+
+    cloneBoard(board) {
+      var clonedBoard = [];
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = board[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var row = _step5.value;
+          clonedBoard.push(row.map(function (cell) {
+            var clonedCell = Object.assign({}, cell);
+            if (clonedCell.piece) clonedCell.piece = Object.assign({}, clonedCell.piece);
+            return clonedCell;
+          }));
         }
       } catch (err) {
         _didIteratorError5 = true;
@@ -3820,51 +3855,18 @@ var InitialPieces = __webpack_require__("ef09");
         }
       }
 
-      return false;
-    },
-
-    cloneBoard(board) {
-      var clonedBoard = [];
-      var _iteratorNormalCompletion7 = true;
-      var _didIteratorError7 = false;
-      var _iteratorError7 = undefined;
-
-      try {
-        for (var _iterator7 = board[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-          var row = _step7.value;
-          clonedBoard.push(row.map(function (cell) {
-            var clonedCell = Object.assign({}, cell);
-            if (clonedCell.piece) clonedCell.piece = Object.assign({}, clonedCell.piece);
-            return clonedCell;
-          }));
-        }
-      } catch (err) {
-        _didIteratorError7 = true;
-        _iteratorError7 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion7 && _iterator7.return != null) {
-            _iterator7.return();
-          }
-        } finally {
-          if (_didIteratorError7) {
-            throw _iteratorError7;
-          }
-        }
-      }
-
       return clonedBoard;
     },
 
     getKingPosition(color) {
       var kingCell;
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
+      var _iteratorNormalCompletion6 = true;
+      var _didIteratorError6 = false;
+      var _iteratorError6 = undefined;
 
       try {
-        for (var _iterator8 = this.cells[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-          var row = _step8.value;
+        for (var _iterator6 = this.cells[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          var row = _step6.value;
           kingCell = row.filter(function (cell) {
             return cell.piece && cell.piece.type === 'king' && cell.piece.color === color;
           });
@@ -3875,16 +3877,16 @@ var InitialPieces = __webpack_require__("ef09");
           }
         }
       } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
+        _didIteratorError6 = true;
+        _iteratorError6 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion8 && _iterator8.return != null) {
-            _iterator8.return();
+          if (!_iteratorNormalCompletion6 && _iterator6.return != null) {
+            _iterator6.return();
           }
         } finally {
-          if (_didIteratorError8) {
-            throw _iteratorError8;
+          if (_didIteratorError6) {
+            throw _iteratorError6;
           }
         }
       }
@@ -3910,13 +3912,13 @@ var InitialPieces = __webpack_require__("ef09");
     getAllPieceMovesForColor(color) {
       var self = this;
       var friendlyPieces = [];
-      var _iteratorNormalCompletion9 = true;
-      var _didIteratorError9 = false;
-      var _iteratorError9 = undefined;
+      var _iteratorNormalCompletion7 = true;
+      var _didIteratorError7 = false;
+      var _iteratorError7 = undefined;
 
       try {
-        for (var _iterator9 = this.cells[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-          var row = _step9.value;
+        for (var _iterator7 = this.cells[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+          var row = _step7.value;
           friendlyPieces = friendlyPieces.concat(row.filter(function (cell) {
             return cell.piece && cell.piece.color === color;
           }).map(function (cell) {
@@ -3931,16 +3933,16 @@ var InitialPieces = __webpack_require__("ef09");
           }));
         }
       } catch (err) {
-        _didIteratorError9 = true;
-        _iteratorError9 = err;
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
-            _iterator9.return();
+          if (!_iteratorNormalCompletion7 && _iterator7.return != null) {
+            _iterator7.return();
           }
         } finally {
-          if (_didIteratorError9) {
-            throw _iteratorError9;
+          if (_didIteratorError7) {
+            throw _iteratorError7;
           }
         }
       }
@@ -3948,118 +3950,429 @@ var InitialPieces = __webpack_require__("ef09");
       return friendlyPieces;
     },
 
-    alphaBetaMax(alpha, beta, remainingDepth, isInitialMove) {
-      if (remainingDepth == 0) {
-        return this.evaluateBoard();
+    reshadeCells() {
+      for (var _i10 = 0, _Object$keys2 = Object.keys(this.shadedCells); _i10 < _Object$keys2.length; _i10++) {
+        var shadedCell = _Object$keys2[_i10];
+        var cellPosition = shadedCell.split(",").map(x => Number(x));
+        this.shadeCell(cellPosition[0], cellPosition[1]);
+      }
+    },
+
+    rgbToHex(rgb) {
+      var hex = Math.round(Number(rgb)).toString(16);
+
+      if (hex.length < 2) {
+        hex = "0" + hex;
       }
 
-      var _iteratorNormalCompletion10 = true;
-      var _didIteratorError10 = false;
-      var _iteratorError10 = undefined;
+      return hex;
+    },
 
-      try {
-        for (var _iterator10 = this.getAllPieceMovesForColor("black")[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-          var pieceMove = _step10.value;
-          var _iteratorNormalCompletion11 = true;
-          var _didIteratorError11 = false;
-          var _iteratorError11 = undefined;
+    shadeCell(row, col) {
+      var offset = 8 * row + col;
+      var cell = document.querySelectorAll(".cell")[offset];
 
-          try {
-            for (var _iterator11 = pieceMove.moves[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-              var move = _step11.value;
-              // for each move, perform move
-              var capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
-              this.movePiece(move.piecePos, move.movePos);
-              var score = this.alphaBetaMin(alpha, beta, remainingDepth - 1);
+      if (this.cells[row][col].value) {
+        var maxColor = 1 + this.aiMove.value + Math.abs(this.aiMove.min);
+        var adjustedColor = 1 + this.cells[row][col].value + Math.abs(this.aiMove.min);
+        var weight = 255 / maxColor;
+        var red = this.rgbToHex(255);
+        var green = this.rgbToHex(255 - Math.min(adjustedColor * weight, 255));
+        var blue = this.rgbToHex(0);
+        cell.style.backgroundColor = '#' + red + green + blue;
+      } else {
+        cell.style.backgroundColor = this.cells[row][col].color === 'white' ? '#fff' : '#999';
+      }
+    },
 
-              if (isInitialMove) {
-                if (score > this.aiMove.value) {
-                  this.aiMove.value = score;
-                  this.aiMove.move = move;
+    alphaBetaMax(alpha, beta, remainingDepth, isInitialMove) {
+      var _this3 = this;
+
+      return _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3() {
+        var _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _iterator8, _step8, pieceMove, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, move, capturedPiece, score;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!(remainingDepth == 0)) {
+                  _context3.next = 2;
+                  break;
                 }
 
-                this.aiMove.min = Math.min(this.aiMove.min, score);
-                this.cells[move.movePos.row][move.movePos.col].value = score;
-              }
+                return _context3.abrupt("return", _this3.evaluateBoard());
 
-              this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
-              this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
+              case 2:
+                _iteratorNormalCompletion8 = true;
+                _didIteratorError8 = false;
+                _iteratorError8 = undefined;
+                _context3.prev = 5;
+                _iterator8 = _this3.getAllPieceMovesForColor("black")[Symbol.iterator]();
 
-              if (score >= beta) {
-                //console.log(`Returning bc beta: ${score}`);
-                return beta;
-              }
+              case 7:
+                if (_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done) {
+                  _context3.next = 56;
+                  break;
+                }
 
-              if (score > alpha) {
-                alpha = score;
-              }
+                pieceMove = _step8.value;
+                _iteratorNormalCompletion9 = true;
+                _didIteratorError9 = false;
+                _iteratorError9 = undefined;
+                _context3.prev = 12;
+                _iterator9 = pieceMove.moves[Symbol.iterator]();
+
+              case 14:
+                if (_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done) {
+                  _context3.next = 39;
+                  break;
+                }
+
+                move = _step9.value;
+                // for each move, perform move
+                capturedPiece = _this3.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, _this3.cells[move.movePos.row][move.movePos.col].piece) : null;
+
+                _this3.movePiece(move.piecePos, move.movePos);
+
+                _context3.next = 20;
+                return _this3.alphaBetaMin(alpha, beta, remainingDepth - 1);
+
+              case 20:
+                score = _context3.sent;
+
+                if (!isInitialMove) {
+                  _context3.next = 31;
+                  break;
+                }
+
+                if (score > _this3.aiMove.value) {
+                  _this3.aiMove.value = score;
+                  _this3.aiMove.move = move;
+                }
+
+                _this3.aiMove.min = _this3.aiMove.min ? Math.min(_this3.aiMove.min, score) : Infinity;
+                if (!_this3.cells[move.movePos.row][move.movePos.col].value) _this3.cells[move.movePos.row][move.movePos.col].value = score;else _this3.cells[move.movePos.row][move.movePos.col].value = Math.max(score, _this3.cells[move.movePos.row][move.movePos.col].value);
+                _this3.shadedCells[`${move.movePos.row},${move.movePos.col}`] = _this3.cells[move.movePos.row][move.movePos.col].value;
+
+                _this3.reshadeCells();
+
+                _context3.next = 29;
+                return new Promise(resolve => setTimeout(resolve, 50));
+
+              case 29:
+                _context3.next = 31;
+                return _this3.$nextTick();
+
+              case 31:
+                _this3.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, _this3.cells[move.movePos.row][move.movePos.col].piece);
+                _this3.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
+
+                if (!(score >= beta)) {
+                  _context3.next = 35;
+                  break;
+                }
+
+                return _context3.abrupt("return", beta);
+
+              case 35:
+                if (score > alpha) {
+                  alpha = score;
+                }
+
+              case 36:
+                _iteratorNormalCompletion9 = true;
+                _context3.next = 14;
+                break;
+
+              case 39:
+                _context3.next = 45;
+                break;
+
+              case 41:
+                _context3.prev = 41;
+                _context3.t0 = _context3["catch"](12);
+                _didIteratorError9 = true;
+                _iteratorError9 = _context3.t0;
+
+              case 45:
+                _context3.prev = 45;
+                _context3.prev = 46;
+
+                if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
+                  _iterator9.return();
+                }
+
+              case 48:
+                _context3.prev = 48;
+
+                if (!_didIteratorError9) {
+                  _context3.next = 51;
+                  break;
+                }
+
+                throw _iteratorError9;
+
+              case 51:
+                return _context3.finish(48);
+
+              case 52:
+                return _context3.finish(45);
+
+              case 53:
+                _iteratorNormalCompletion8 = true;
+                _context3.next = 7;
+                break;
+
+              case 56:
+                _context3.next = 62;
+                break;
+
+              case 58:
+                _context3.prev = 58;
+                _context3.t1 = _context3["catch"](5);
+                _didIteratorError8 = true;
+                _iteratorError8 = _context3.t1;
+
+              case 62:
+                _context3.prev = 62;
+                _context3.prev = 63;
+
+                if (!_iteratorNormalCompletion8 && _iterator8.return != null) {
+                  _iterator8.return();
+                }
+
+              case 65:
+                _context3.prev = 65;
+
+                if (!_didIteratorError8) {
+                  _context3.next = 68;
+                  break;
+                }
+
+                throw _iteratorError8;
+
+              case 68:
+                return _context3.finish(65);
+
+              case 69:
+                return _context3.finish(62);
+
+              case 70:
+                return _context3.abrupt("return", alpha);
+
+              case 71:
+              case "end":
+                return _context3.stop();
             }
-          } catch (err) {
-            _didIteratorError11 = true;
-            _iteratorError11 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion11 && _iterator11.return != null) {
-                _iterator11.return();
-              }
-            } finally {
-              if (_didIteratorError11) {
-                throw _iteratorError11;
-              }
-            }
           }
-        }
-      } catch (err) {
-        _didIteratorError10 = true;
-        _iteratorError10 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion10 && _iterator10.return != null) {
-            _iterator10.return();
-          }
-        } finally {
-          if (_didIteratorError10) {
-            throw _iteratorError10;
-          }
-        }
-      }
-
-      return alpha;
+        }, _callee3, null, [[5, 58, 62, 70], [12, 41, 45, 53], [46,, 48, 52], [63,, 65, 69]]);
+      }))();
     },
 
     alphaBetaMin(alpha, beta, remainingDepth) {
-      if (remainingDepth == 0) {
-        return -this.evaluateBoard();
-      }
+      var _this4 = this;
 
+      return _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4() {
+        var _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, pieceMove, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, move, capturedPiece, score;
+
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!(remainingDepth == 0)) {
+                  _context4.next = 2;
+                  break;
+                }
+
+                return _context4.abrupt("return", -_this4.evaluateBoard());
+
+              case 2:
+                _iteratorNormalCompletion10 = true;
+                _didIteratorError10 = false;
+                _iteratorError10 = undefined;
+                _context4.prev = 5;
+                _iterator10 = _this4.getAllPieceMovesForColor("white")[Symbol.iterator]();
+
+              case 7:
+                if (_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done) {
+                  _context4.next = 46;
+                  break;
+                }
+
+                pieceMove = _step10.value;
+                _iteratorNormalCompletion11 = true;
+                _didIteratorError11 = false;
+                _iteratorError11 = undefined;
+                _context4.prev = 12;
+                _iterator11 = pieceMove.moves[Symbol.iterator]();
+
+              case 14:
+                if (_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done) {
+                  _context4.next = 29;
+                  break;
+                }
+
+                move = _step11.value;
+                // for each move, perform move
+                capturedPiece = _this4.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, _this4.cells[move.movePos.row][move.movePos.col].piece) : null;
+
+                _this4.movePiece(move.piecePos, move.movePos);
+
+                _context4.next = 20;
+                return _this4.alphaBetaMax(alpha, beta, remainingDepth - 1, false);
+
+              case 20:
+                score = _context4.sent;
+                _this4.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, _this4.cells[move.movePos.row][move.movePos.col].piece);
+                _this4.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
+
+                if (!(score <= alpha)) {
+                  _context4.next = 25;
+                  break;
+                }
+
+                return _context4.abrupt("return", alpha);
+
+              case 25:
+                if (score < beta) {
+                  beta = score;
+                }
+
+              case 26:
+                _iteratorNormalCompletion11 = true;
+                _context4.next = 14;
+                break;
+
+              case 29:
+                _context4.next = 35;
+                break;
+
+              case 31:
+                _context4.prev = 31;
+                _context4.t0 = _context4["catch"](12);
+                _didIteratorError11 = true;
+                _iteratorError11 = _context4.t0;
+
+              case 35:
+                _context4.prev = 35;
+                _context4.prev = 36;
+
+                if (!_iteratorNormalCompletion11 && _iterator11.return != null) {
+                  _iterator11.return();
+                }
+
+              case 38:
+                _context4.prev = 38;
+
+                if (!_didIteratorError11) {
+                  _context4.next = 41;
+                  break;
+                }
+
+                throw _iteratorError11;
+
+              case 41:
+                return _context4.finish(38);
+
+              case 42:
+                return _context4.finish(35);
+
+              case 43:
+                _iteratorNormalCompletion10 = true;
+                _context4.next = 7;
+                break;
+
+              case 46:
+                _context4.next = 52;
+                break;
+
+              case 48:
+                _context4.prev = 48;
+                _context4.t1 = _context4["catch"](5);
+                _didIteratorError10 = true;
+                _iteratorError10 = _context4.t1;
+
+              case 52:
+                _context4.prev = 52;
+                _context4.prev = 53;
+
+                if (!_iteratorNormalCompletion10 && _iterator10.return != null) {
+                  _iterator10.return();
+                }
+
+              case 55:
+                _context4.prev = 55;
+
+                if (!_didIteratorError10) {
+                  _context4.next = 58;
+                  break;
+                }
+
+                throw _iteratorError10;
+
+              case 58:
+                return _context4.finish(55);
+
+              case 59:
+                return _context4.finish(52);
+
+              case 60:
+                return _context4.abrupt("return", beta);
+
+              case 61:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[5, 48, 52, 60], [12, 31, 35, 43], [36,, 38, 42], [53,, 55, 59]]);
+      }))();
+    },
+
+    evaluateBoard() {
+      var moveCounts = {
+        white: 0,
+        black: 0
+      };
+      var pieceCounts = {
+        white: {
+          pawn: 0,
+          rook: 0,
+          knight: 0,
+          bishop: 0,
+          queen: 0,
+          king: 0
+        },
+        black: {
+          pawn: 0,
+          rook: 0,
+          knight: 0,
+          bishop: 0,
+          queen: 0,
+          king: 0
+        }
+      };
       var _iteratorNormalCompletion12 = true;
       var _didIteratorError12 = false;
       var _iteratorError12 = undefined;
 
       try {
-        for (var _iterator12 = this.getAllPieceMovesForColor("white")[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-          var pieceMove = _step12.value;
+        for (var _iterator12 = this.cells[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+          var row = _step12.value;
           var _iteratorNormalCompletion13 = true;
           var _didIteratorError13 = false;
           var _iteratorError13 = undefined;
 
           try {
-            for (var _iterator13 = pieceMove.moves[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-              var move = _step13.value;
-              // for each move, perform move
-              var capturedPiece = this.cells[move.movePos.row][move.movePos.col].piece ? Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece) : null;
-              this.movePiece(move.piecePos, move.movePos);
-              var score = this.alphaBetaMax(alpha, beta, remainingDepth - 1, false);
-              this.cells[move.piecePos.row][move.piecePos.col].piece = Object.assign({}, this.cells[move.movePos.row][move.movePos.col].piece);
-              this.cells[move.movePos.row][move.movePos.col].piece = capturedPiece;
+            for (var _iterator13 = row[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
+              var cell = _step13.value;
 
-              if (score <= alpha) {
-                //console.log(`Returning bc alpha: ${score}`);
-                return alpha;
-              }
-
-              if (score < beta) {
-                beta = score;
+              if (cell.piece) {
+                pieceCounts[cell.piece.color][cell.piece.type]++;
+                moveCounts[cell.piece.color] += this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col).length;
               }
             }
           } catch (err) {
@@ -4092,82 +4405,6 @@ var InitialPieces = __webpack_require__("ef09");
         }
       }
 
-      return beta;
-    },
-
-    evaluateBoard() {
-      var moveCounts = {
-        white: 0,
-        black: 0
-      };
-      var pieceCounts = {
-        white: {
-          pawn: 0,
-          rook: 0,
-          knight: 0,
-          bishop: 0,
-          queen: 0,
-          king: 0
-        },
-        black: {
-          pawn: 0,
-          rook: 0,
-          knight: 0,
-          bishop: 0,
-          queen: 0,
-          king: 0
-        }
-      };
-      var _iteratorNormalCompletion14 = true;
-      var _didIteratorError14 = false;
-      var _iteratorError14 = undefined;
-
-      try {
-        for (var _iterator14 = this.cells[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
-          var row = _step14.value;
-          var _iteratorNormalCompletion15 = true;
-          var _didIteratorError15 = false;
-          var _iteratorError15 = undefined;
-
-          try {
-            for (var _iterator15 = row[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
-              var cell = _step15.value;
-
-              if (cell.piece) {
-                pieceCounts[cell.piece.color][cell.piece.type]++;
-                moveCounts[cell.piece.color] += this.getPsuedoLegalsForPiece(cell.piece.type, cell.piece.color, cell.row, cell.col).length;
-              }
-            }
-          } catch (err) {
-            _didIteratorError15 = true;
-            _iteratorError15 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion15 && _iterator15.return != null) {
-                _iterator15.return();
-              }
-            } finally {
-              if (_didIteratorError15) {
-                throw _iteratorError15;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError14 = true;
-        _iteratorError14 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion14 && _iterator14.return != null) {
-            _iterator14.return();
-          }
-        } finally {
-          if (_didIteratorError14) {
-            throw _iteratorError14;
-          }
-        }
-      }
-
       var materialScore = 200 * (pieceCounts.black.king - pieceCounts.white.king) + 10 * (pieceCounts.black.queen - pieceCounts.white.queen) + 6 * (pieceCounts.black.rook - pieceCounts.white.rook) + 4 * (pieceCounts.black.knight - pieceCounts.white.knight) + 4 * (pieceCounts.black.bishop - pieceCounts.white.bishop) + 2 * (pieceCounts.black.pawn - pieceCounts.white.pawn);
       var mobilityScore = 0.1 * (moveCounts.black - moveCounts.white);
       var score = materialScore + mobilityScore;
@@ -4193,8 +4430,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var component = normalizeComponent(
   components_Chessvue_type_script_lang_js_,
-  Chessvue_type_template_id_2f1e5772_render,
-  Chessvue_type_template_id_2f1e5772_staticRenderFns,
+  Chessvue_type_template_id_6c2183c8_render,
+  Chessvue_type_template_id_6c2183c8_staticRenderFns,
   false,
   injectStyles,
   null,
@@ -4680,6 +4917,39 @@ var toString = {}.toString;
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
+
+
+/***/ }),
+
+/***/ "6b54":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+__webpack_require__("3846");
+var anObject = __webpack_require__("cb7c");
+var $flags = __webpack_require__("0bfb");
+var DESCRIPTORS = __webpack_require__("9e1e");
+var TO_STRING = 'toString';
+var $toString = /./[TO_STRING];
+
+var define = function (fn) {
+  __webpack_require__("2aba")(RegExp.prototype, TO_STRING, fn, true);
+};
+
+// 21.2.5.14 RegExp.prototype.toString()
+if (__webpack_require__("79e5")(function () { return $toString.call({ source: 'a', flags: 'b' }) != '/a/b'; })) {
+  define(function toString() {
+    var R = anObject(this);
+    return '/'.concat(R.source, '/',
+      'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
+  });
+// FF44- RegExp#toString has a wrong name
+} else if ($toString.name != TO_STRING) {
+  define(function toString() {
+    return $toString.call(this);
+  });
+}
 
 
 /***/ }),
