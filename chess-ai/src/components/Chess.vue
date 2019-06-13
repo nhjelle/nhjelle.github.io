@@ -71,9 +71,9 @@ export default {
             this.winner = '';
             this.selectedCell = null;
             this.shadedCells = [];
-            this.reshadeCells();
             this.createEmptyBoard();
             this.placeInitialPieces();
+            this.reshadeCells();
         },
         capturePiece(piece){
             if(piece.color == 'black'){
